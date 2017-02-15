@@ -1,0 +1,172 @@
+<table class="table table-advance table-hover table-striped table-checkable order-column" id="">
+    <thead>
+        <tr>
+            <th width='1%'>
+                <%= erp_datalist_check_all %>
+            </th>
+            <% if get_columns(params).include?("order_code") %>
+                <th>
+                    <%= t('.order_code') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("customer") %>
+                <th>
+                    <%= t('.customer') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("order_date") %>
+                <th>
+                    <%= t('.order_date') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("salesperson") %>
+                <th>
+                    <%= t('.salesperson') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("total") %>
+                <th>
+                    <%= t('.total') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("remain") %>
+                <th>
+                    <%= t('.remain') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("deadline") %>
+                <th>
+                    <%= t('.debt_deadline') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("status") %>
+                <th>
+                    <%= t('.status') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("creator") %>
+                <th>
+                    <%= t('.creator') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("created_at") %>
+                <th class="sortable" sort-by='erp_orders_orders.created_at'>
+                    <%= t('.created_at') %>
+                </th>
+            <% end %>
+            <th width="7%"><%= t('.actions') %></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if @orders.each do |order| %>
+            <tr class="odd gradeX">
+                <td>
+                    <%= erp_datalist_check_row(id: order.id) %>
+                </td>
+                <% if get_columns(params).include?("order_code") %>
+                <td><%= order.code %></td>
+                <% end %>
+                <% if get_columns(params).include?("customer") %>
+                <td><%= order.customer_name %></td>
+                <% end %>
+                <% if get_columns(params).include?("order_date") %>
+                <td><%= format_date(order.order_date) %></td>
+                <% end %>
+                <% if get_columns(params).include?("salesperson") %>
+                <td><%= order.salesperson_name %></td>
+                <% end %>
+                <% if get_columns(params).include?("total") %>
+                <td><%= order.total %></td>
+                <% end %>
+                <% if get_columns(params).include?("remain") %>
+                <td><%= order.remain_amount %></td>
+                <% end %>
+                <% if get_columns(params).include?("deadline") %>
+                <td><%= format_date(order.get_payment_deadline) %></td>
+                <% end %>
+                <% if get_columns(params).include?("status") %>
+                <td>
+                    <% if order.cache_payment_status == Erp::Orders::Order::STATUS_PAID %>
+                        <span class="label label-sm label-success"><%= t('.'+order.cache_payment_status) %></span>
+                    <% end %>
+                    <% if order.cache_payment_status == Erp::Orders::Order::STATUS_NOT_PAID %>
+                        <span class="label label-sm label-danger"><%= t('.'+order.cache_payment_status) %></span>
+                    <% end %>
+                    <% if order.cache_payment_status == Erp::Orders::Order::STATUS_DEBT %>
+                        <span class="label label-sm label-warning"><%= t('.'+order.cache_payment_status) %></span>
+                    <% end %>
+                </td>
+                <% end %>
+                <% if get_columns(params).include?("creator") %>
+                <td>
+                    <%= erp_component('avatar', {
+                        user: order.creator
+                    }) %>
+                </td>
+                <% end %>
+                <% if get_columns(params).include?("created_at") %>
+                <td><%= order.created_at.strftime("%d/%m/%Y") %></td>
+                <% end %>
+                <td>
+                    <%
+                        actions = []
+                        actions += [
+                            {
+                                text: '<i class="icon-docs"></i> '+t('.view'),
+                                url: erp_orders.backend_order_path(order),
+                                class: 'modal-link'
+                            },
+                            {
+                                text: '<i class="fa fa-edit"></i> '+t('.edit'),
+                                url: erp_orders.edit_backend_order_path(order)
+                            },
+                            {
+                                text: '<i class="icon-action-undo"></i> '+t('.pay'),
+                                url: erp_payments.new_backend_payment_record_path(order_id: order.id, payment_type: Erp::Payments::PaymentRecord::PAYMENT_TYPE_PAY),
+                                class: 'modal-link'
+                            },
+                            {
+                                text: '<i class="icon-action-redo"></i> '+t('.receive'),
+                                url: erp_payments.new_backend_payment_record_path(order_id: order.id, payment_type: Erp::Payments::PaymentRecord::PAYMENT_TYPE_RECEIVE),
+                                class: 'modal-link'
+                            },
+                            {
+                                text: '<i class="icon-refresh"></i> '+t('.extend_debt_deadline'),
+                                url: erp_payments.new_backend_debt_path(order_id: order.id),
+                                class: 'modal-link'
+                            },
+                            { divider: true }
+                        ]
+                        order.payment_records.each do |payment_record|
+                            actions << {
+                                text: '<i class="fa fa-print"></i> '+t('.payment_record')+' ('+payment_record.code+')',
+                                url: erp_payments.backend_payment_record_path(payment_record),
+                                class: 'modal-link'
+                            }
+                        end
+                        actions << { divider: true } if !order.payment_records.empty?
+                        actions += [
+                            
+                            {
+                              text: '<i class="fa fa-trash"></i> '+t('.delete'),
+                              url: erp_orders.backend_order_path(order),
+                              data_method: 'DELETE',
+                              data_confirm: t('.delete_confirm'),
+                              class: 'ajax-link'
+                            }
+                        ]
+                    %>
+                    <%= erp_datalist_row_actions(
+                        actions
+                    ) %>
+                </td>
+            </tr>
+        <% end.empty? %>
+            <tr>
+                <td colspan="6"><%= t('.no_matching_records_found') %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+    
+<%= erp_datalist_pagination(@orders) %>

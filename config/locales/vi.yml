@@ -1,0 +1,59 @@
+vi:
+  layouts:
+    erp:
+      backend:
+        sidebar:
+          accounting: "Kế toán"
+          orders: "Đơn hàng"
+          payment_records: "Phiếu thu/chi"
+  erp:
+    accounting: 
+      backend:
+        orders:
+          index:
+            orders: "Đơn hàng"
+            order_code: "Mã đơn hàng"
+            order_date: "Ngày đặt hàng"
+            customer: "Khách hàng"
+            salesperson: "Người bán hàng"
+            total: "Tổng tiền"
+            remain: "Còn nợ"
+            debt_deadline: "Hạn thanh toán"
+            status: "Tình trạng thanh toán"
+            creator: "Người tạo"
+            created_at: "Ngày tạo"
+            sales_order: "Đơn hàng bán"
+            purchase_order: "Đơn hàng mua"
+            paid: "Đã thanh toán"
+            not_paid: "Chưa thanh toán"
+            debt: "Đang công nợ"
+            order_archived: "Đơn hàng đã ẩn"
+            delete: "Xóa đơn hàng"
+            delete_confirm: "Bạn chắc chắn muốn xóa?"
+            extend_debt_deadline: "Gia hạn thanh toán"
+            archive: "Ẩn đơn hàng"
+            unarchive: "Hiện đơn hàng"
+            payment_record_code: "Mã phiếu thu/chi"
+          list:
+            order_code: "Mã đơn hàng"
+            customer: "Khách hàng"
+            salesperson: "Người bán hàng"
+            order_date: "Ngày đặt hàng"
+            total: "Tổng tiền"
+            remain: "Còn nợ"
+            status: "Tình trạng"
+            creator: "Người tạo"
+            created_at: "Ngày tạo"
+            actions: "Thao tác"
+            debt: "Công nợ"
+            not_paid: "Quá hạn thanh toán"
+            paid: "Đã thanh toán"
+            edit: "Chỉnh sửa"
+            delete: "Xóa đơn hàng"
+            delete_confirm: "Bạn có chắc muốn xóa?"
+            view: "Xem chi tiết"
+            pay: "Trả tiền"
+            receive: "Thu tiền"
+            extend_debt_deadline: "Gia hạn thanh toán"
+            debt_deadline: "Hạn thanh toán"
+            payment_record: "Phiếu thanh toán"

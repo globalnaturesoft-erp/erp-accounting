@@ -1,0 +1,3 @@
+= Erp::Accounting
+
+This project rocks and uses MIT-LICENSE.

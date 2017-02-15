@@ -1,0 +1,127 @@
+<% content_for :title do %>
+    <%= t('.orders') %>
+<% end %>
+
+<% content_for :page_title do %>
+    <i class="fa fa-file-text"></i> <%= t('.orders') %>
+<% end %>
+
+<% content_for :page_toolbar do %>
+    <div class="btn-group">
+        <div class="clearfix">
+        </div>
+    </div>
+<% end %>
+
+<%= erp_datalist(
+    url: erp_accounting.list_backend_orders_path,
+    keywords: [
+        {
+            text: t('.order_code'), name: 'erp_orders_orders.code'
+        },
+        {
+            text: t('.customer'), name: 'erp_contacts_contacts.name'
+        },
+        {
+            text: t('.salesperson'), name: 'erp_users.name'
+        },
+        {
+            text: t('.payment_record_code'), name: 'erp_payments_payment_records.code'
+        },
+        {
+            text: t('creator'),
+            name: 'erp_users.name',
+            select: {
+                name: 'erp_users.id',
+                data_url: erp.dataselect_backend_users_path
+            }
+        }
+    ],
+    actions: [
+        {
+            text: '<i class="icon-refresh"></i> '+t('.extend_debt_deadline'),
+            url: '',
+            data_method: 'PUT'
+        },
+        {
+            divider: true
+        },
+        {
+            text: '<i class="fa fa-eye-slash"></i> '+t('.archive'),
+            url: '',
+            data_method: 'PUT'
+        },
+        {
+            text: '<i class="fa fa-eye"></i> '+t('.unarchive'),
+            url: '',
+            data_method: 'PUT'
+        },
+        {
+            divider: true
+        },
+        {
+            text: '<i class="fa fa-trash"></i> '+t('.delete'),
+            url: erp_orders.delete_all_backend_orders_path,
+            data_method: 'DELETE',
+            data_confirm: t('.delete_confirm')
+        }
+    ],
+    filters: [
+        {
+            text: t('.sales_order'), name: 'sales_order', value: true, checked: false
+        },
+        {
+            text: t('.purchase_order'), name: 'purchase_order', value: true, checked: false
+        },
+        {
+            divider: true
+        },
+        {
+            text: t('.paid'), name: 'paid', value: true, checked: false
+        },
+        {
+            text: t('.not_paid'), name: 'not_paid', value: true, checked: false
+        },
+        {
+            text: t('.debt'), name: 'debt', value: true, checked: false
+        },
+        {
+            divider: true
+        },
+        {
+            text: t('.order_archived'), name: 'show_archived', value: true, checked: false
+        }
+    ],
+    columns: [
+        {
+            text: t('.order_code'), name: 'order_code', value: true, checked: true
+        },
+        {
+            text: t('.order_date'), name: 'order_date', value: true, checked: true
+        },
+        {
+            text: t('.customer'), name: 'customer', value: true, checked: true
+        },
+        {
+            text: t('.salesperson'), name: 'salesperson', value: true, checked: true
+        },
+        {
+            text: t('.total'), name: 'total', value: true, checked: true
+        },
+        {
+            text: t('.remain'), name: 'remain', value: true, checked: true
+        },
+        {
+            text: t('.debt_deadline'), name: 'deadline', value: true, checked: true
+        },
+        {
+            text: t('.status'), name: 'status', value: true, checked: true
+        },
+        {
+            text: t('.creator'), name: 'creator', value: true, checked: false
+        },
+        {
+            text: t('.created_at'), name: 'created_at', value: true, checked: false
+        }
+    ]
+) %>
