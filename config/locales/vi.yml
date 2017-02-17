@@ -51,7 +51,7 @@ vi:
             edit: "Chỉnh sửa"
             delete: "Xóa đơn hàng"
             delete_confirm: "Bạn có chắc muốn xóa?"
-            view: "Xem chi tiết"
+            view: "Xem đơn hàng"
             pay: "Trả tiền"
             receive: "Thu tiền"
             extend_debt_deadline: "Gia hạn thanh toán"
