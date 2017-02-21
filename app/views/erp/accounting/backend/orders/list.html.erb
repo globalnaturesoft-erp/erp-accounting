@@ -86,13 +86,25 @@
                 <% end %>
                 <% if get_columns(params).include?("status") %>
                 <td>
+                    <% if order.status == Erp::Orders::Order::STATUS_DRAFT %>
+                        <span class="label label-sm label-default"><%= t('.'+order.status) %></span>
+                    <% end %>
+                    <% if order.status == Erp::Orders::Order::STATUS_CONFIRMED %>
+                        <span class="label label-sm label-success"><%= t('.'+order.status) %></span>
+                    <% end %>
+                    <% if order.status == Erp::Orders::Order::STATUS_CANCELLED %>
+                        <span class="label label-sm label-danger"><%= t('.'+order.status) %></span>
+                    <% end %>
                     <% if order.cache_payment_status == Erp::Orders::Order::STATUS_PAID %>
                         <span class="label label-sm label-success"><%= t('.'+order.cache_payment_status) %></span>
                     <% end %>
-                    <% if order.cache_payment_status == Erp::Orders::Order::STATUS_NOT_PAID %>
+                    <% if order.cache_payment_status == Erp::Orders::Order::STATUS_OVERDUE %>
                         <span class="label label-sm label-danger"><%= t('.'+order.cache_payment_status) %></span>
                     <% end %>
                     <% if order.cache_payment_status == Erp::Orders::Order::STATUS_DEBT %>
+                        <span class="label label-sm label-warning"><%= t('.'+order.cache_payment_status) %></span>
+                    <% end %>
+                    <% if order.cache_payment_status == Erp::Orders::Order::STATUS_RETURN_BACK %>
                         <span class="label label-sm label-warning"><%= t('.'+order.cache_payment_status) %></span>
                     <% end %>
                 </td>
