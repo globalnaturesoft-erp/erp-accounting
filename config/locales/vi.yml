@@ -5,7 +5,7 @@ vi:
         sidebar:
           accounting: "Kế toán"
           orders: "Đơn hàng"
-          payment_records: "Phiếu thu/chi"
+          payment_records: "Sổ quỹ"
   erp:
     accounting: 
       backend:
