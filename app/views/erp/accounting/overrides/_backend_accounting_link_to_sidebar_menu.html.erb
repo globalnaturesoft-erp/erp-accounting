@@ -1,8 +1,8 @@
-<li class="nav-item <%= "active open" if ["erp/accounting/backend/orders", "erp/payments/backend/payment_records"].include?(params[:controller]) %>">
+<li class="nav-item <%= "active open" if ["erp/accounting/backend/accountings", "erp/payments/backend/payment_records"].include?(params[:controller]) %>">
     <a href="javascript:;" class="nav-link nav-toggle">
         <i class="fa fa-bar-chart-o"></i>
         <span class="title"><%= t('.accounting') %></span>
-        <% if ["erp/accounting/backend/orders", "erp/payments/backend/payment_records"].include?(params[:controller]) %>
+        <% if ["erp/accounting/backend/accountings", "erp/payments/backend/payment_records"].include?(params[:controller]) %>
             <span class="selected"></span>
             <span class="arrow open"></span>
         <% else %>
