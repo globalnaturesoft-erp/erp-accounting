@@ -47,14 +47,16 @@
             divider: true
         },
         {
-            text: '<i class="fa fa-eye-slash"></i> '+t('.archive'),
-            url: '',
-            data_method: 'PUT'
+            text: '<i class="fa fa-check"></i> '+t('.set_confirm'),
+            url: erp_orders.set_confirm_all_backend_orders_path,
+            data_method: 'PUT',
+            data_confirm: t('.set_confirm_confirm')
         },
         {
-            text: '<i class="fa fa-eye"></i> '+t('.unarchive'),
-            url: '',
-            data_method: 'PUT'
+            text: '<i class="fa fa-ban"></i> '+t('.set_cancel'),
+            url: erp_orders.set_cancel_all_backend_orders_path,
+            data_method: 'PUT',
+            data_confirm: t('.set_cancel_confirm')
         },
         {
             divider: true
@@ -87,12 +89,6 @@
         },
         {
             text: t('.return_back'), name: 'cache_payment_status', value: Erp::Orders::Order::STATUS_RETURN_BACK, checked: false
-        },
-        {
-            divider: true
-        },
-        {
-            text: t('.order_archived'), name: 'show_archived', value: true, checked: false
         }
     ],
     columns: [
@@ -103,19 +99,25 @@
             text: t('.order_date'), name: 'order_date', value: true, checked: true
         },
         {
+            text: t('.debt_deadline'), name: 'deadline', value: true, checked: true
+        },
+        {
             text: t('.customer'), name: 'customer', value: true, checked: true
         },
         {
-            text: t('.salesperson'), name: 'salesperson', value: true, checked: true
+            text: t('.supplier'), name: 'supplier', value: true, checked: true
+        },
+        {
+            text: t('.salesperson'), name: 'salesperson', value: true, checked: false
         },
         {
             text: t('.total'), name: 'total', value: true, checked: true
         },
         {
-            text: t('.remain'), name: 'remain', value: true, checked: true
+            text: t('.paid'), name: 'paid', value: true, checked: false
         },
         {
-            text: t('.debt_deadline'), name: 'deadline', value: true, checked: true
+            text: t('.remain'), name: 'remain', value: true, checked: true
         },
         {
             text: t('.status'), name: 'status', value: true, checked: true
