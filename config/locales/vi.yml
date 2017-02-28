@@ -9,8 +9,8 @@ vi:
   erp:
     accounting: 
       backend:
-        orders:
-          index:
+        accountings:
+          accounting_orders:
             orders: "Đơn hàng thanh toán"
             order_code: "Mã đơn hàng"
             order_date: "Ngày đặt hàng"
@@ -39,7 +39,7 @@ vi:
             payment_record_code: "Mã phiếu thu/chi"
             set_confirm_confirm: "Bạn đồng ý xác nhận đơn hàng?"
             set_cancel_confirm: "Bạn đồng ý hủy đơn hàng?"
-          list:
+          accounting_orders_listing:
             order_code: "Mã đơn hàng"
             customer: "Khách hàng"
             supplier: "Nhà cung cấp"
