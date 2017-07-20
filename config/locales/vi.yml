@@ -3,8 +3,9 @@ vi:
     erp:
       backend:
         sidebar:
-          accounting: "Kế toán"
-          orders: "Đơn hàng"
+          accounting: "KẾ TOÁN"
+          accounting_orders: "Đơn hàng"
+          accounts: "Tài khoản"
           payment_records: "Sổ quỹ"
   erp:
     accounting: 
