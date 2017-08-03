@@ -23,7 +23,7 @@
             text: t('.customer'), name: 'erp_contacts_contacts.name'
         },
         {
-            text: t('.salesperson'), name: 'erp_users.name'
+            text: t('.employee'), name: 'erp_users.name'
         },
         {
             text: t('.payment_record_code'), name: 'erp_payments_payment_records.code'
@@ -79,16 +79,16 @@
             divider: true
         },
         {
-            text: t('.paid'), name: 'cache_payment_status', value: Erp::Orders::Order::STATUS_PAID, checked: false
+            text: t('.paid'), name: 'cache_payment_status', value: Erp::Orders::Order::PAYMENT_STATUS_PAID, checked: false
         },
         {
-            text: t('.not_paid'), name: 'cache_payment_status', value: Erp::Orders::Order::STATUS_OVERDUE, checked: false
+            text: t('.not_paid'), name: 'cache_payment_status', value: Erp::Orders::Order::PAYMENT_STATUS_OVERDUE, checked: false
         },
         {
-            text: t('.debt'), name: 'cache_payment_status', value: Erp::Orders::Order::STATUS_DEBT, checked: false
+            text: t('.debt'), name: 'cache_payment_status', value: Erp::Orders::Order::PAYMENT_STATUS_DEBT, checked: false
         },
         {
-            text: t('.return_back'), name: 'cache_payment_status', value: Erp::Orders::Order::STATUS_RETURN_BACK, checked: false
+            text: t('.return_back'), name: 'cache_payment_status', value: Erp::Orders::Order::PAYMENT_STATUS_OVERPAID, checked: false
         }
     ],
     columns: [
@@ -108,7 +108,7 @@
             text: t('.supplier'), name: 'supplier', value: true, checked: true
         },
         {
-            text: t('.salesperson'), name: 'salesperson', value: true, checked: false
+            text: t('.employee'), name: 'employee', value: true, checked: false
         },
         {
             text: t('.total'), name: 'total', value: true, checked: true
