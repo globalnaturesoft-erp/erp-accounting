@@ -1,0 +1,81 @@
+<% content_for :title do %>
+    <%= t('.purchase_orders') %>
+<% end %>
+
+<% content_for :page_title do %>
+    <i class="fa fa-file-text"></i> <%= t('.purchase_orders') %>
+<% end %>
+
+<% content_for :page_toolbar do %>
+    <div class="btn-group">
+        <div class="clearfix">
+        </div>
+    </div>
+<% end %>
+
+<%= erp_datalist(
+    url: erp_accounting.purchase_orders_list_backend_purchase_orders_path,
+    keywords: [
+        {
+            text: t('.order_code'), name: 'erp_orders_orders.code'
+        },
+        {
+            text: t('.supplier'), name: 'erp_contacts_contacts.name'
+        },
+        {
+            text: t('.employee'), name: 'erp_users.name'
+        },
+        {
+            text: t('.payment_record_code'), name: 'erp_payments_payment_records.code'
+        },
+        {
+            text: t('creator'),
+            name: 'erp_users.name',
+            select: {
+                name: 'erp_users.id',
+                data_url: erp.dataselect_backend_users_path
+            }
+        }
+    ],
+    actions: [
+        
+    ],
+    filters: [
+        
+    ],
+    columns: [
+        {
+            text: t('.order_code'), name: 'order_code', value: true, checked: true
+        },
+        {
+            text: t('.order_date'), name: 'order_date', value: true, checked: true
+        },
+        {
+            text: t('.debt_deadline'), name: 'deadline', value: true, checked: true
+        },
+        {
+            text: t('.supplier'), name: 'supplier', value: true, checked: true
+        },
+        {
+            text: t('.total'), name: 'total', value: true, checked: true
+        },
+        {
+            text: t('.paid'), name: 'paid', value: true, checked: false
+        },
+        {
+            text: t('.remain'), name: 'remain', value: true, checked: true
+        },
+        {
+            text: t('.status'), name: 'status', value: true, checked: true
+        },
+        {
+            text: t('.employee'), name: 'employee', value: true, checked: false
+        },
+        {
+            text: t('.creator'), name: 'creator', value: true, checked: false
+        },
+        {
+            text: t('.created_at'), name: 'created_at', value: true, checked: false
+        }
+    ]
+) %>
