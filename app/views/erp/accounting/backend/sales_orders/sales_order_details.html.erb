@@ -84,7 +84,7 @@
                         <% @order.payment_records.each do |payment_record| %>
                             <tr>                            
                                 <td class="text-left"><strong><%= payment_record.code %></strong></td>
-                                <td class="text-left"><%= payment_record.payment_type == Erp::Payments::PaymentRecord::PAYMENT_TYPE_PAY ? t('.pay') : t('.receive') %></td>
+                                <td class="text-left"><%= payment_record.pay_receive == Erp::Payments::PaymentRecord::TYPE_PAY ? t('.pay') : t('.receive') %></td>
                                 <td class="text-left"><%= payment_record.contact_name %></td>
                                 <td class="text-left"><%= format_price(payment_record.amount) %></td>
                                 <td class="text-right"><%= format_date(payment_record.payment_date) %></td>
