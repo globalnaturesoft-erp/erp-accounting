@@ -131,6 +131,8 @@ vi:
             actions: "Hành động"
             pay: "Phiếu chi"
             receive: "Phiếu thu"
+            view: "Xem chi tiết"
+            edit: "Chỉnh sửa"
         purchase_orders:
           index:
             purchase_orders: "Hóa đơn đặt hàng"
@@ -185,3 +187,5 @@ vi:
             actions: "Hành động"
             pay: "Phiếu chi"
             receive: "Phiếu thu"
+            view: "Xem chi tiết"
+            edit: "Chỉnh sửa"
