@@ -15,14 +15,14 @@ module Erp
           url: erp_payments.new_backend_payment_record_path(
                   order_id: order.id,
                   pay_receive: Erp::Payments::PaymentRecord::TYPE_RECEIVE,
-                  payment_type: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::TYPE_FOR_ORDER))
+                  payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::TYPE_FOR_ORDER))
         }
         actions << {
           text: '<i class="icon-action-undo"></i> '+(order.purchase? ? t('.pay_ncc') : t('.pay_kh')),
           url: erp_payments.new_backend_payment_record_path(
                   order_id: order.id,
                   pay_receive: Erp::Payments::PaymentRecord::TYPE_PAY,
-                  payment_type: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::TYPE_FOR_ORDER))
+                  payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::TYPE_FOR_ORDER))
         }
         
         erp_datalist_row_actions(
