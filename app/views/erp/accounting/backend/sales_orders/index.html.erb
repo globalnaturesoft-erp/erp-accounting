@@ -6,9 +6,15 @@
     <i class="fa fa-file-text"></i> <%= t('.sales_orders') %>
 <% end %>
 
-<% content_for :page_toolbar do %>
-    <div class="btn-group">
-        <div class="clearfix">
+<% content_for :global_filter do %>
+    <div class="row top-datalist">
+        <div class="col-md-3">
+            <%= erp_form_control("dataselect", {
+                name: 'customer',
+                label: t('.filter_customer'),
+                placeholder: t('.choose_customer'),
+                url: erp_contacts.dataselect_backend_contacts_path(format: 'json', is_customer: true),
+            }) %>
         </div>
     </div>
 <% end %>
@@ -20,13 +26,12 @@
             text: t('.order_code'), name: 'erp_orders_orders.code'
         },
         {
-            text: t('.customer'), name: 'erp_contacts_contacts.name'
-        },
-        {
-            text: t('.employee'), name: 'erp_users.name'
-        },
-        {
-            text: t('.payment_record_code'), name: 'erp_payments_payment_records.code'
+            text: t('.employee'),
+            name: 'erp_users.name',
+            select: {
+                name: 'erp_orders_orders.employee_id',
+                data_url: erp.dataselect_backend_users_path
+            }
         },
         {
             text: t('creator'),
@@ -41,7 +46,18 @@
         
     ],
     filters: [
-        
+        {
+            text: t('.overdue'), name: 'cache_payment_status', value: Erp::Orders::Order::PAYMENT_STATUS_OVERDUE, checked: true
+        },
+        {
+            text: t('.paid'), name: 'cache_payment_status', value: Erp::Orders::Order::PAYMENT_STATUS_PAID, checked: false
+        },
+        {
+            text: t('.debt'), name: 'cache_payment_status', value: Erp::Orders::Order::PAYMENT_STATUS_DEBT, checked: false
+        },
+        {
+            text: t('.overpaid'), name: 'cache_payment_status', value: Erp::Orders::Order::PAYMENT_STATUS_OVERPAID, checked: false
+        }
     ],
     columns: [
         {
@@ -51,7 +67,7 @@
             text: t('.order_date'), name: 'order_date', value: true, checked: true
         },
         {
-            text: t('.debt_deadline'), name: 'deadline', value: true, checked: true
+            text: t('.debt_deadline'), name: 'deadline', value: true, checked: false
         },
         {
             text: t('.customer'), name: 'customer', value: true, checked: true
@@ -77,5 +93,6 @@
         {
             text: t('.created_at'), name: 'created_at', value: true, checked: false
         }
-    ]
+    ],
+    sort: { sort_by: 'erp_orders_orders.order_date', sort_direction: 'desc' }
 ) %>

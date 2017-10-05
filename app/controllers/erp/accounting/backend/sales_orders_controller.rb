@@ -5,7 +5,10 @@ module Erp
         
         # POST /sales orders/list
         def sales_orders_list
-          @orders = Erp::Orders::Order.search(params).accounting_sales_orders.paginate(:page => params[:page], :per_page => 10)
+          @orders = Erp::Orders::Order.search(params)
+                                      .accounting_sales_orders
+                                      .where(payment_for: Erp::Payments::PaymentType::TYPE_FOR_ORDER) # @todo move 'where' to model
+                                      .paginate(:page => params[:page], :per_page => 10)
           render layout: nil
         end
         

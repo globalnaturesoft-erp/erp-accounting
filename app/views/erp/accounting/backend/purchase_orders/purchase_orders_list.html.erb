@@ -10,7 +10,7 @@
                 </th>
             <% end %>
             <% if get_columns(params).include?("order_date") %>
-                <th>
+                <th class="sortable" sort-by='erp_orders_orders.order_date'>
                     <%= t('.order_date') %>
                 </th>
             <% end %>
@@ -94,7 +94,7 @@
                 <% end %>
                 <% if get_columns(params).include?("status") %>
                 <td>
-                    <%= status_label(order.status) %>
+                    <%= status_label(order.status) %><br>
                     <%= status_label(order.cache_payment_status) %>
                 </td>
                 <% end %>
@@ -116,7 +116,7 @@
                 <td><%= format_date(order.created_at) %></td>
                 <% end %>
                 <td>
-                    <%= order_dropdown_actions(order) %>
+                    <%= accounting_order_dropdown_actions(order) %>
                 </td>
             </tr>
         <% end %>
