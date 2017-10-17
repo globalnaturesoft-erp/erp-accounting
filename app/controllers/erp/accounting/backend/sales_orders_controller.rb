@@ -7,7 +7,7 @@ module Erp
         def sales_orders_list
           @orders = Erp::Orders::Order.search(params)
                                       .accounting_sales_orders
-                                      .where(payment_for: Erp::Payments::PaymentType::TYPE_FOR_ORDER) # @todo move 'where' to model
+                                      .where(payment_for: Erp::Orders::Order::PAYMENT_FOR_ORDER) # @todo move 'where' to model
                                       .paginate(:page => params[:page], :per_page => 10)
           render layout: nil
         end

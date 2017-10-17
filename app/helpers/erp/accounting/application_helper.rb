@@ -11,19 +11,33 @@ module Erp
         } if can? :read, order
         actions << { divider: true }
         actions << {
-          text: '<i class="icon-action-redo"></i> '+(order.purchase? ? t('.receive_ncc') : t('.receive_kh')),
+          text: '<i class="icon-action-redo"></i> ' + t('.receive_kh'),
           url: erp_payments.new_backend_payment_record_path(
                   order_id: order.id,
                   pay_receive: Erp::Payments::PaymentRecord::TYPE_RECEIVE,
-                  payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::TYPE_FOR_ORDER))
-        }
+                  payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_SALES_ORDER))
+        } if can? :receive_sales_order, order
         actions << {
-          text: '<i class="icon-action-undo"></i> '+(order.purchase? ? t('.pay_ncc') : t('.pay_kh')),
+          text: '<i class="icon-action-undo"></i> ' + t('.pay_kh'),
           url: erp_payments.new_backend_payment_record_path(
                   order_id: order.id,
                   pay_receive: Erp::Payments::PaymentRecord::TYPE_PAY,
-                  payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::TYPE_FOR_ORDER))
-        }
+                  payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_SALES_ORDER))
+        } if can? :pay_sales_order, order
+        actions << {
+          text: '<i class="icon-action-redo"></i> ' + t('.receive_ncc'),
+          url: erp_payments.new_backend_payment_record_path(
+                  order_id: order.id,
+                  pay_receive: Erp::Payments::PaymentRecord::TYPE_RECEIVE,
+                  payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_PURCHASE_ORDER))
+        } if can? :receive_purchase_order, order
+        actions << {
+          text: '<i class="icon-action-undo"></i> ' + t('.pay_ncc'),
+          url: erp_payments.new_backend_payment_record_path(
+                  order_id: order.id,
+                  pay_receive: Erp::Payments::PaymentRecord::TYPE_PAY,
+                  payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_PURCHASE_ORDER))
+        } if can? :pay_purchase_order, order
         
         erp_datalist_row_actions(
           actions
