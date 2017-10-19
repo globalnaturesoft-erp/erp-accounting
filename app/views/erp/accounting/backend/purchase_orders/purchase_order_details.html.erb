@@ -17,109 +17,105 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="tab_5_1">
-            <div class="table-scrollable">
-                <table class="table table-bordered table-advance order-column">
-                    <thead class="flip-content">
+            <table class="table table-bordered table-advance order-column">
+                <thead class="flip-content">
+                    <tr>
+                        <th width="20%" class="text-left bg-yellow bg-font-yellow text-nowrap">Sản phẩm</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap">Đơn vị tính</th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap">Giá bán<sup>(1)</sup></th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap">Số lượng<sup>(2)</sup></th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="(3) = (1) x (2)">Thành tiền<sup>(3)</sup></th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap">Giảm<sup>(4)</sup></th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap">Phí v.chuyển<sup>(5)</sup></th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="Tổng tiền trước thuế: (6) = (3) - (4) + (5)">Tổng cộng<sup>(6)</sup></th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap">Tiền VAT<sup>(7)</sup></th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="Tổng cần thanh toán (đã gồm VAT): (8) = (6) + (7)">Tổng thanh toán<sup>(8)</sup></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="bg-green" colspan="3"><strong> TỔNG CỘNG </strong></td>
+                        <td class="bg-green text-right"><strong><%= @order.items_count %></strong></td>
+                        <td class="bg-green text-right"><strong><%= format_price(@order.subtotal) %></strong></td>
+                        <td class="bg-green text-right"><strong><%= @order.discount_amount == 0 ? '' : format_price(@order.discount_amount) %></strong></td>
+                        <td class="bg-green text-right"><strong><%= @order.shipping_amount == 0 ? '' : format_price(@order.shipping_amount) %></strong></td>
+                        <td class="bg-green text-right"><strong><%= format_price(@order.total_without_tax) %></strong></td>
+                        <td class="bg-green text-right"><strong><%= format_price(@order.cache_tax_amount) %></strong></td>
+                        <td class="bg-green text-right"><strong><%= format_price(@order.cache_total) %></strong></td>
+                    </tr>
+                    <% @order.order_details.each do |order_detail| %>
                         <tr>
-                            <th width="20%" class="text-left bg-yellow bg-font-yellow text-nowrap">Sản phẩm</th>
-                            <th class="bg-yellow bg-font-yellow text-nowrap">Đơn vị tính</th>
-                            <th class="text-right bg-yellow bg-font-yellow text-nowrap">Giá bán<sup>(1)</sup></th>
-                            <th class="text-right bg-yellow bg-font-yellow text-nowrap">Số lượng<sup>(2)</sup></th>
-                            <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="(3) = (1) x (2)">Thành tiền<sup>(3)</sup></th>
-                            <th class="text-right bg-yellow bg-font-yellow text-nowrap">Giảm<sup>(4)</sup></th>
-                            <th class="text-right bg-yellow bg-font-yellow text-nowrap">Phí v.chuyển<sup>(5)</sup></th>
-                            <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="Tổng tiền trước thuế: (6) = (3) - (4) + (5)">Tổng cộng<sup>(6)</sup></th>
-                            <th class="text-right bg-yellow bg-font-yellow text-nowrap">Tiền VAT<sup>(7)</sup></th>
-                            <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="Tổng cần thanh toán (đã gồm VAT): (8) = (6) + (7)">Tổng thanh toán<sup>(8)</sup></th>
+                            <td class="text-left"><strong><%= order_detail.product_name %></strong></td>
+                            <td class="text-left"><%= order_detail.product_unit_name %></td>
+                            <td class="text-right"><%= format_price(order_detail.price) %></td>
+                            <td class="text-right"><%= format_number(order_detail.quantity) %></td>
+                            <td class="text-right"><%= format_price(order_detail.subtotal) %></td>
+                            <td class="text-right"><%= order_detail.discount.nil? ? '' : format_price(order_detail.discount) %></td>
+                            <td class="text-right"><%= order_detail.shipping_fee.nil? ? '' : format_price(order_detail.shipping_fee) %></td>
+                            <td class="text-right"><%= format_price(order_detail.total_without_tax) %></td>
+                            <td class="text-right"><%= format_price(order_detail.tax_amount) %></td>
+                            <td class="text-right"><%= format_price(order_detail.total) %></td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="bg-green" colspan="3"><strong> TỔNG CỘNG </strong></td>
-                            <td class="bg-green text-right"><strong><%= @order.items_count %></strong></td>
-                            <td class="bg-green text-right"><strong><%= format_price(@order.subtotal) %></strong></td>
-                            <td class="bg-green text-right"><strong><%= @order.discount_amount == 0 ? '' : format_price(@order.discount_amount) %></strong></td>
-                            <td class="bg-green text-right"><strong><%= @order.shipping_amount == 0 ? '' : format_price(@order.shipping_amount) %></strong></td>
-                            <td class="bg-green text-right"><strong><%= format_price(@order.total_without_tax) %></strong></td>
-                            <td class="bg-green text-right"><strong><%= format_price(@order.cache_tax_amount) %></strong></td>
-                            <td class="bg-green text-right"><strong><%= format_price(@order.cache_total) %></strong></td>
-                        </tr>
-                        <% @order.order_details.each do |order_detail| %>
-                            <tr>
-                                <td class="text-left"><strong><%= order_detail.product_name %></strong></td>
-                                <td class="text-left"><%= order_detail.product_unit_name %></td>
-                                <td class="text-right"><%= format_price(order_detail.price) %></td>
-                                <td class="text-right"><%= format_number(order_detail.quantity) %></td>
-                                <td class="text-right"><%= format_price(order_detail.subtotal) %></td>
-                                <td class="text-right"><%= order_detail.discount.nil? ? '' : format_price(order_detail.discount) %></td>
-                                <td class="text-right"><%= order_detail.shipping_fee.nil? ? '' : format_price(order_detail.shipping_fee) %></td>
-                                <td class="text-right"><%= format_price(order_detail.total_without_tax) %></td>
-                                <td class="text-right"><%= format_price(order_detail.tax_amount) %></td>
-                                <td class="text-right"><%= format_price(order_detail.total) %></td>
-                            </tr>
-                        <% end %>
-                    </tbody>
-                </table>
-            </div>
+                    <% end %>
+                </tbody>
+            </table>
         </div>
         
         <% if @order.payment_records.present? %>
         <div class="tab-pane" id="tab_5_2">
-            <div class="table-scrollable">
-                <table class="table table-bordered table-advance order-column">
-                    <thead class="flip-content">
-                        <tr>
-                            <th width="15%" class="text-left bg-yellow bg-font-yellow text-nowrap"><%= t('.payment_code') %></th>
-                            <th class="bg-yellow bg-font-yellow text-nowrap"><%= t('.payment_type') %></th>
-                            <th class="bg-yellow bg-font-yellow text-nowrap"><%= t('.contact') %></th>
-                            <th class="bg-yellow bg-font-yellow text-nowrap"><%= t('.amount') %></th>
-                            <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.payment_date') %></th>
-                            <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.description') %></th>
-                            <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.accountant') %></th>
-                            <th class="bg-yellow bg-font-yellow text-nowrap text-left"><%= t('.creator') %></th>
-                            <th class="bg-yellow bg-font-yellow text-nowrap text-left"><%= t('.actions') %></th>
+            <table class="table table-bordered table-advance order-column">
+                <thead class="flip-content">
+                    <tr>
+                        <th width="15%" class="text-left bg-yellow bg-font-yellow text-nowrap"><%= t('.payment_code') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap"><%= t('.payment_type') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap"><%= t('.contact') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.amount') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.payment_date') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.description') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.accountant') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-left"><%= t('.creator') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-left"><%= t('.actions') %></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @order.payment_records.each do |payment_record| %>
+                        <tr>                            
+                            <td class="text-left"><strong><%= payment_record.code %></strong></td>
+                            <td class="text-left"><%= payment_record.pay_receive == Erp::Payments::PaymentRecord::TYPE_PAY ? t('.pay') : t('.receive') %></td>
+                            <td class="text-left"><%= payment_record.supplier_name %></td>
+                            <td class="text-left"><%= format_price(payment_record.amount) %></td>
+                            <td class="text-right"><%= format_date(payment_record.payment_date) %></td>
+                            <td class="text-right"><%= payment_record.description %></td>
+                            <td class="text-center">
+                                <%= erp_component('avatar', {
+                                    user: payment_record.accountant
+                                }) %>
+                            </td>
+                            <td class="text-center">
+                                <%= erp_component('avatar', {
+                                    user: payment_record.creator
+                                }) %>
+                            </td>
+                            <td>
+                               <%= erp_datalist_row_actions(
+                                    [
+                                        {
+                                            text: '<i class="icon-docs"></i> '+t('.view'),
+                                            url: erp_payments.backend_payment_record_path(payment_record),
+                                            class: "modal-link"
+                                        },
+                                        {
+                                            text: '<i class="fa fa-edit"></i> '+t('.edit'),
+                                            url: erp_payments.edit_backend_payment_record_path(payment_record),
+                                            class: "modal-link"
+                                        }
+                                    ]
+                                ) %> 
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <% @order.payment_records.each do |payment_record| %>
-                            <tr>                            
-                                <td class="text-left"><strong><%= payment_record.code %></strong></td>
-                                <td class="text-left"><%= payment_record.pay_receive == Erp::Payments::PaymentRecord::TYPE_PAY ? t('.pay') : t('.receive') %></td>
-                                <td class="text-left"><%= payment_record.contact_name %></td>
-                                <td class="text-left"><%= format_price(payment_record.amount) %></td>
-                                <td class="text-right"><%= format_date(payment_record.payment_date) %></td>
-                                <td class="text-right"><%= payment_record.description %></td>
-                                <td class="text-center">
-                                    <%= erp_component('avatar', {
-                                        user: payment_record.accountant
-                                    }) %>
-                                </td>
-                                <td class="text-center">
-                                    <%= erp_component('avatar', {
-                                        user: payment_record.creator
-                                    }) %>
-                                </td>
-                                <td>
-                                   <%= erp_datalist_row_actions(
-                                        [
-                                            {
-                                                text: '<i class="icon-docs"></i> '+t('.view'),
-                                                url: erp_payments.backend_payment_record_path(payment_record),
-                                                class: "modal-link"
-                                            },
-                                            {
-                                                text: '<i class="fa fa-edit"></i> '+t('.edit'),
-                                                url: erp_payments.edit_backend_payment_record_path(payment_record),
-                                                class: "modal-link"
-                                            }
-                                        ]
-                                    ) %> 
-                                </td>
-                            </tr>
-                        <% end %>
-                    </tbody>
-                </table>
-            </div>
+                    <% end %>
+                </tbody>
+            </table>
         </div>
         <% end %>
     </div>

@@ -69,7 +69,7 @@
                         <th width="15%" class="text-left bg-yellow bg-font-yellow text-nowrap"><%= t('.payment_code') %></th>
                         <th class="bg-yellow bg-font-yellow text-nowrap"><%= t('.payment_type') %></th>
                         <th class="bg-yellow bg-font-yellow text-nowrap"><%= t('.contact') %></th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap"><%= t('.amount') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.amount') %></th>
                         <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.payment_date') %></th>
                         <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.description') %></th>
                         <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.accountant') %></th>
@@ -82,8 +82,8 @@
                         <tr>                            
                             <td class="text-left"><strong><%= payment_record.code %></strong></td>
                             <td class="text-left"><%= payment_record.pay_receive == Erp::Payments::PaymentRecord::TYPE_PAY ? t('.pay') : t('.receive') %></td>
-                            <td class="text-left"><%= payment_record.contact_name %></td>
-                            <td class="text-left"><%= format_price(payment_record.amount) %></td>
+                            <td class="text-left"><%= payment_record.customer_name %></td>
+                            <td class="text-right"><%= format_price(payment_record.amount) %></td>
                             <td class="text-right"><%= format_date(payment_record.payment_date) %></td>
                             <td class="text-right"><%= payment_record.description %></td>
                             <td class="text-center">

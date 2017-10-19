@@ -9,6 +9,26 @@
                     <%= t('.order_code') %>
                 </th>
             <% end %>
+            <% if get_columns(params).include?("customer") %>
+                <th>
+                    <%= t('.customer') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("total") %>
+                <th class="text-right">
+                    <%= t('.total') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("paid") %>
+                <th class="text-right">
+                    <%= t('.paid') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("remain") %>
+                <th class="text-right">
+                    <%= t('.remain') %>
+                </th>
+            <% end %>
             <% if get_columns(params).include?("order_date") %>
                 <th class="sortable" sort-by='erp_orders_orders.order_date'>
                     <%= t('.order_date') %>
@@ -19,34 +39,14 @@
                     <%= t('.debt_deadline') %>
                 </th>
             <% end %>
-            <% if get_columns(params).include?("customer") %>
+            <% if get_columns(params).include?("status") %>
                 <th>
-                    <%= t('.customer') %>
+                    <%= t('.status') %>
                 </th>
             <% end %>
             <% if get_columns(params).include?("employee") %>
                 <th>
                     <%= t('.employee') %>
-                </th>
-            <% end %>
-            <% if get_columns(params).include?("total") %>
-                <th>
-                    <%= t('.total') %>
-                </th>
-            <% end %>
-            <% if get_columns(params).include?("paid") %>
-                <th>
-                    <%= t('.paid') %>
-                </th>
-            <% end %>
-            <% if get_columns(params).include?("remain") %>
-                <th>
-                    <%= t('.remain') %>
-                </th>
-            <% end %>
-            <% if get_columns(params).include?("status") %>
-                <th>
-                    <%= t('.status') %>
                 </th>
             <% end %>
             <% if get_columns(params).include?("creator") %>
@@ -74,31 +74,35 @@
                     <strong><%= order.code %></strong>
                 </td>
                 <% end %>
+                <% if get_columns(params).include?("customer") %>
+                <td><%= order.customer_name %></td>
+                <% end %>
+                <% if get_columns(params).include?("total") %>
+                <td class="text-right"><%= format_price(order.total) %></td>
+                <% end %>
+                <% if get_columns(params).include?("paid") %>
+                <td class="text-right"><%= format_price(order.paid_amount) %></td>
+                <% end %>
+                <% if get_columns(params).include?("remain") %>
+                <td class="text-right"><%= format_price(order.remain_amount) %></td>
+                <% end %>
                 <% if get_columns(params).include?("order_date") %>
                 <td><%= format_date(order.order_date) %></td>
                 <% end %>
                 <% if get_columns(params).include?("deadline") %>
                 <td><%= format_date(order.get_payment_deadline) %></td>
                 <% end %>
-                <% if get_columns(params).include?("customer") %>
-                <td><%= order.customer_name %></td>
-                <% end %>
-                <% if get_columns(params).include?("employee") %>
-                <td><%= order.employee_name %></td>
-                <% end %>
-                <% if get_columns(params).include?("total") %>
-                <td><%= format_price(order.total) %></td>
-                <% end %>
-                <% if get_columns(params).include?("paid") %>
-                <td><%= format_price(order.paid_amount) %></td>
-                <% end %>
-                <% if get_columns(params).include?("remain") %>
-                <td><%= format_price(order.remain_amount) %></td>
-                <% end %>
                 <% if get_columns(params).include?("status") %>
                 <td>
                     <%= status_label(order.status) %><br>
                     <%= status_label(order.cache_payment_status) %>
+                </td>
+                <% end %>
+                <% if get_columns(params).include?("employee") %>
+                <td>
+                    <%= erp_component('avatar', {
+                        user: order.employee
+                    }) %>
                 </td>
                 <% end %>
                 <% if get_columns(params).include?("creator") %>

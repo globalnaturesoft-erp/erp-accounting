@@ -9,16 +9,6 @@
                     <%= t('.order_code') %>
                 </th>
             <% end %>
-            <% if get_columns(params).include?("order_date") %>
-                <th class="sortable" sort-by='erp_orders_orders.order_date'>
-                    <%= t('.order_date') %>
-                </th>
-            <% end %>
-            <% if get_columns(params).include?("deadline") %>
-                <th>
-                    <%= t('.debt_deadline') %>
-                </th>
-            <% end %>
             <% if get_columns(params).include?("supplier") %>
                 <th>
                     <%= t('.supplier') %>
@@ -37,6 +27,16 @@
             <% if get_columns(params).include?("remain") %>
                 <th>
                     <%= t('.remain') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("order_date") %>
+                <th class="sortable" sort-by='erp_orders_orders.order_date'>
+                    <%= t('.order_date') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("deadline") %>
+                <th>
+                    <%= t('.debt_deadline') %>
                 </th>
             <% end %>
             <% if get_columns(params).include?("status") %>
@@ -74,12 +74,6 @@
                     <strong><%= order.code %></strong>
                 </td>
                 <% end %>
-                <% if get_columns(params).include?("order_date") %>
-                <td><%= format_date(order.order_date) %></td>
-                <% end %>
-                <% if get_columns(params).include?("deadline") %>
-                <td><%= format_date(order.get_payment_deadline) %></td>
-                <% end %>
                 <% if get_columns(params).include?("supplier") %>
                 <td><%= order.supplier_name %></td>
                 <% end %>
@@ -91,6 +85,12 @@
                 <% end %>
                 <% if get_columns(params).include?("remain") %>
                 <td><%= format_price(order.remain_amount) %></td>
+                <% end %>
+                <% if get_columns(params).include?("order_date") %>
+                <td><%= format_date(order.order_date) %></td>
+                <% end %>
+                <% if get_columns(params).include?("deadline") %>
+                <td><%= format_date(order.get_payment_deadline) %></td>
                 <% end %>
                 <% if get_columns(params).include?("status") %>
                 <td>
