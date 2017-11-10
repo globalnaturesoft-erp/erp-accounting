@@ -18,6 +18,13 @@ Erp::Accounting::Engine.routes.draw do
 				end
 			end
 			
+			resources :product_returns do
+				collection do
+					post 'product_returns_list'
+          get 'product_return_details'
+				end
+			end
+			
 		end
 	end
 end
