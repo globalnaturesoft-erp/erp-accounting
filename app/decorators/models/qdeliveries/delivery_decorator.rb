@@ -37,7 +37,7 @@ Erp::Qdeliveries::Delivery.class_eval do
 
   # update cache payment status
   def update_cache_payment_status
-    if self.delivery_type == Erp::Qdeliveries::Delivery::TYPE_CUSTOMER_IMPORT
+    if [Erp::Qdeliveries::Delivery::TYPE_CUSTOMER_IMPORT].include?(self.delivery_type)
       self.update_columns(cache_payment_status: payment_status)
     end
   end
