@@ -10,7 +10,7 @@ Erp::Qdeliveries::Delivery.class_eval do
   # Trường hợp phiếu delivery đã hủy và (có/đã) thanh toán thì hiển thị thế nào?
   def self.accounting_deliveries
     self.where(status: Erp::Qdeliveries::Delivery::STATUS_DELIVERED)
-        .where(delivery_type: Erp::Qdeliveries::Delivery::TYPE_CUSTOMER_IMPORT)
+        .where(delivery_type: Erp::Qdeliveries::Delivery::TYPE_SALES_IMPORT)
   end
   
   # set payment status
@@ -37,7 +37,7 @@ Erp::Qdeliveries::Delivery.class_eval do
 
   # update cache payment status
   def update_cache_payment_status
-    if [Erp::Qdeliveries::Delivery::TYPE_CUSTOMER_IMPORT].include?(self.delivery_type)
+    if [Erp::Qdeliveries::Delivery::TYPE_SALES_IMPORT].include?(self.delivery_type)
       self.update_columns(cache_payment_status: payment_status)
     end
   end
