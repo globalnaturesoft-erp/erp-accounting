@@ -1,12 +1,12 @@
 module Erp
   module Accounting
     module ApplicationHelper
-      
+
       # Order dropdown actions
       def accounting_order_dropdown_actions(order)
         actions = []
         actions << {
-          text: '<i class="fa fa-file-text-o"></i> '+t('.view'),
+          text: '<i class="fa fa-print"></i> Xem & In',
           url: erp_orders.backend_order_path(order)
         } if can? :read, order
         actions << { divider: true }
@@ -38,12 +38,12 @@ module Erp
                   pay_receive: Erp::Payments::PaymentRecord::TYPE_PAY,
                   payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_PURCHASE_ORDER))
         } if can? :pay_purchase_order, order
-        
+
         erp_datalist_row_actions(
           actions
         )
       end
-      
+
       def accounting_delivery_dropdown_actions(delivery)
         actions = []
         actions << {
@@ -53,12 +53,12 @@ module Erp
                   pay_receive: Erp::Payments::PaymentRecord::TYPE_PAY,
                   payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_PRODUCT_RETURN))
         }
-        
+
         erp_datalist_row_actions(
           actions
         )
       end
-      
+
     end
   end
 end
