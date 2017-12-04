@@ -20,8 +20,8 @@
             <table class="table table-bordered table-advance order-column">
                 <thead class="flip-content">
                     <tr>
-                        <th width="20%" class="text-left bg-yellow bg-font-yellow text-nowrap">Sản phẩm</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap">Đơn vị tính</th>
+                        <th width="25%" class="text-left bg-yellow bg-font-yellow text-nowrap">Sản phẩm</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap">ĐVT</th>
                         <th class="text-right bg-yellow bg-font-yellow text-nowrap">Giá bán<sup>(1)</sup></th>
                         <th class="text-right bg-yellow bg-font-yellow text-nowrap">Số lượng<sup>(2)</sup></th>
                         <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="(3) = (1) x (2)">Thành tiền<sup>(3)</sup></th>
@@ -80,37 +80,22 @@
                 <tbody>
                     <% @order.payment_records.each do |payment_record| %>
                         <tr>                            
-                            <td class="text-left"><strong><%= payment_record.code %></strong></td>
-                            <td class="text-left"><%= payment_record.pay_receive == Erp::Payments::PaymentRecord::TYPE_PAY ? t('.pay') : t('.receive') %></td>
+                            <td class="text-left">
+                                <strong><%= link_to payment_record.code, erp_payments.backend_payment_record_path(payment_record), target: '_blank' %></strong>
+                            </td>
+                            <td class="text-left"><%= payment_record.is_receipt_voucher? ? t('.receive') : t('.pay') %></td>
                             <td class="text-left"><%= payment_record.customer_name %></td>
                             <td class="text-right"><%= format_price(payment_record.amount) %></td>
                             <td class="text-right"><%= format_date(payment_record.payment_date) %></td>
                             <td class="text-right"><%= payment_record.description %></td>
                             <td class="text-center">
-                                <%= erp_component('avatar', {
-                                    user: payment_record.accountant
-                                }) %>
+                                <%= payment_record.accountant_name %>
                             </td>
                             <td class="text-center">
-                                <%= erp_component('avatar', {
-                                    user: payment_record.creator
-                                }) %>
+                                <%= payment_record.creator_name %>
                             </td>
                             <td>
-                                <%= erp_datalist_row_actions(
-                                    [
-                                        {
-                                            text: '<i class="icon-docs"></i> '+t('.view'),
-                                            url: erp_payments.backend_payment_record_path(payment_record),
-                                            class: "modal-link"
-                                        },
-                                        {
-                                            text: '<i class="fa fa-edit"></i> '+t('.edit'),
-                                            url: erp_payments.edit_backend_payment_record_path(payment_record),
-                                            class: "modal-link"
-                                        }
-                                    ]
-                                ) %> 
+                                <%= accounting_payment_record_dropdown_actions(payment_record) %>
                             </td>
                         </tr>
                     <% end %>

@@ -20,14 +20,14 @@
             <table class="table table-bordered table-striped flip-content">
                 <thead class="flip-content">
                     <tr>
-                        <th width="20%" class="bg-yellow bg-font-yellow text-nowrap text-left">Tên sản phẩm</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-left">Đơn vị tính</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-left">Thuộc đơn hàng</th>
+                        <th width="20%" class="bg-yellow bg-font-yellow text-nowrap text-center">Tên sản phẩm</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">ĐVT</th>
+                        <th width="15%" class="bg-yellow bg-font-yellow text-nowrap text-center">Hóa đơn liên quan</th>
                         <th class="bg-yellow bg-font-yellow text-nowrap text-center">SL trả hàng</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-right" title="Giá phải trả lại cho khách hàng trên 1 đơn vị sản phẩm">Giá trả</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-right">Tổng trả</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap">Tình trạng</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap">Kho nhập</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center" title="Giá phải trả lại cho khách hàng trên 1 đơn vị sản phẩm">Giá trả</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Tổng trả</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Tình trạng</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Kho nhập</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,8 +52,8 @@
                             <td class="text-center"><%= delivery_detail.quantity %></td>
                             <td class="text-right"><%= format_price(delivery_detail.price) %></td>
                             <td class="text-right"><%= format_price(delivery_detail.total_amount) %></td>
-                            <td class="text-left"><%= delivery_detail.state_name %></td>
-                            <td class="text-left"><%= delivery_detail.warehouse_name %></td>
+                            <td class="text-center"><%= delivery_detail.state_name %></td>
+                            <td class="text-center"><%= delivery_detail.warehouse_name %></td>
                         </tr>
                     <% end %>
                 </tbody>
@@ -64,15 +64,15 @@
             <table class="table table-bordered table-advance order-column">
                 <thead class="flip-content">
                     <tr>
-                        <th width="15%" class="text-left bg-yellow bg-font-yellow text-nowrap"><%= t('.payment_code') %></th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap"><%= t('.payment_type') %></th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap"><%= t('.contact') %></th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.amount') %></th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.payment_date') %></th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-right"><%= t('.description') %></th>
+                        <th width="15%" class="text-left bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.payment_code') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.payment_type') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.contact') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.amount') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.payment_date') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.description') %></th>
                         <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.accountant') %></th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-left"><%= t('.creator') %></th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-left"><%= t('.actions') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.creator') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.actions') %></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,33 +82,16 @@
                             <td class="text-left"><%= payment_record.pay_receive == Erp::Payments::PaymentRecord::TYPE_PAY ? t('.pay') : t('.receive') %></td>
                             <td class="text-left"><%= payment_record.customer_name %></td>
                             <td class="text-left"><%= format_price(payment_record.amount) %></td>
-                            <td class="text-right"><%= format_date(payment_record.payment_date) %></td>
-                            <td class="text-right"><%= payment_record.description %></td>
+                            <td class="text-left"><%= format_date(payment_record.payment_date) %></td>
+                            <td class="text-justify"><%= payment_record.description %></td>
                             <td class="text-center">
-                                <%= erp_component('avatar', {
-                                    user: payment_record.accountant
-                                }) %>
+                                <%= payment_record.accountant_name %>
                             </td>
                             <td class="text-center">
-                                <%= erp_component('avatar', {
-                                    user: payment_record.creator
-                                }) %>
+                                <%= payment_record.creator_name %>
                             </td>
                             <td>
-                               <%= erp_datalist_row_actions(
-                                    [
-                                        {
-                                            text: '<i class="icon-docs"></i> '+t('.view'),
-                                            url: erp_payments.backend_payment_record_path(payment_record),
-                                            class: "modal-link"
-                                        },
-                                        {
-                                            text: '<i class="fa fa-edit"></i> '+t('.edit'),
-                                            url: erp_payments.edit_backend_payment_record_path(payment_record),
-                                            class: "modal-link"
-                                        }
-                                    ]
-                                ) %> 
+                                <%= accounting_payment_record_dropdown_actions(payment_record) %>
                             </td>
                         </tr>
                     <% end %>
