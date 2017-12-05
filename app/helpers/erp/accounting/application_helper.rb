@@ -9,6 +9,10 @@ module Erp
           text: '<i class="fa fa-print"></i> Xem & In HĐ',
           url: erp_orders.backend_order_path(order)
         } if can? :read, order
+        actions << {
+          text: '<i class="fa fa-edit"></i> Chỉnh sửa',
+          url: erp_orders.edit_backend_order_path(order)
+        } if can? :update, order
         actions << { divider: true }
         actions << {
           text: '<i class="fa fa-angle-double-left"></i> ' + t('.receive_kh'),

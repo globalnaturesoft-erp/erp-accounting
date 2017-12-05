@@ -81,10 +81,22 @@
                 <td class="text-right"><%= format_price(order.total) %></td>
                 <% end %>
                 <% if get_columns(params).include?("paid") %>
-                <td class="text-right"><%= format_price(order.paid_amount) %></td>
+                <td class="text-right">
+                    <% if !order.is_debt? %>
+                        <%= format_price(order.paid_amount) %>
+                    <% else %>
+                        --
+                    <% end %>
+                </td>
                 <% end %>
                 <% if get_columns(params).include?("remain") %>
-                <td class="text-right"><%= format_price(order.remain_amount) %></td>
+                <td class="text-right">
+                    <% if !order.is_debt? %>
+                        <%= format_price(order.remain_amount) %>
+                    <% else %>
+                        --
+                    <% end %>
+                </td>
                 <% end %>
                 <% if get_columns(params).include?("order_date") %>
                 <td><%= format_date(order.order_date) %></td>
@@ -125,5 +137,5 @@
 <% if @orders.empty? %>
     <div class="datalist-empty-line"><%= t('.no_matching_records_found') %></div>
 <% end %>
-    
+
 <%= erp_datalist_pagination(@orders) %>
