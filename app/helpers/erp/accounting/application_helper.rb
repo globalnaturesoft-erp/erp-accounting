@@ -7,7 +7,8 @@ module Erp
         actions = []
         actions << {
           text: '<i class="fa fa-print"></i> Xem & In HĐ',
-          url: erp_orders.backend_order_path(order)
+          url: erp_orders.backend_order_path(order),
+          target: '_blank'
         } if can? :read, order
         actions << {
           text: '<i class="fa fa-edit"></i> Chỉnh sửa',
@@ -56,7 +57,8 @@ module Erp
           url: erp_payments.new_backend_payment_record_path(
             delivery_id: delivery.id,
             pay_receive: Erp::Payments::PaymentRecord::TYPE_PAY,
-            payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_PRODUCT_RETURN))
+            payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_PRODUCT_RETURN)),
+            target: '_blank'
         }
 
         erp_datalist_row_actions(
