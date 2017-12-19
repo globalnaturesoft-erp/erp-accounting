@@ -9,6 +9,30 @@
 <% content_for :global_filter do %>
     <div class="row top-datalist">
         <div class="col-md-3">
+            <%= erp_form_control('date', {
+                label: 'Từ ngày',
+                name: 'from_date',
+                placeholder: 'Chọn ngày'
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control('date', {
+                label: 'Đến ngày',
+                name: 'to_date',
+                placeholder: 'Chọn ngày'
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control('dataselect', {
+                label: 'Mốc thời gian',
+                name: 'period',
+                value: (@period.present? ? @period.id : ''),
+                text: (@period.present? ? @period.name : ''),
+                placeholder: 'Chọn khoảng thời gian',
+                url: erp_periods.dataselect_backend_periods_path(format: 'json'),
+            }) %>
+        </div>
+        <div class="col-md-3">
             <%= erp_form_control("dataselect", {
                 name: 'customer',
                 label: t('.filter_customer'),
@@ -17,6 +41,26 @@
             }) %>
         </div>
     </div>
+    <% if Erp::Core.available?("ortho_k") %>
+        <div class="row top-datalist">
+            <div class="col-md-3">
+                <%= erp_form_control("dataselect", {
+                    name: 'doctor',
+                    label: 'Bác sĩ',
+                    placeholder: 'Tìm theo bác sĩ',
+                    url: erp_contacts.dataselect_backend_contacts_path(format: 'json', is_customer: true, contact_group_id: Erp::Contacts::ContactGroup::GROUP_DOCTOR),
+                }) %>
+            </div>
+            <div class="col-md-3">
+                <%= erp_form_control("dataselect", {
+                    name: 'patient',
+                    label: 'Bệnh nhân',
+                    placeholder: 'Tìm theo bệnh nhân',
+                    url: erp_contacts.dataselect_backend_contacts_path(format: 'json', is_customer: true, contact_group_id: Erp::Contacts::ContactGroup::GROUP_PATIENT),
+                }) %>
+            </div>
+        </div>
+    <% end %>
 <% end %>
 
 <%= erp_datalist(

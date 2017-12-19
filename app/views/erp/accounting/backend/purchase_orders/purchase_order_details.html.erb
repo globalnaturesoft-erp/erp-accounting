@@ -26,10 +26,9 @@
                         <th class="text-right bg-yellow bg-font-yellow text-nowrap">Số lượng<sup>(2)</sup></th>
                         <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="(3) = (1) x (2)">Thành tiền<sup>(3)</sup></th>
                         <th class="text-right bg-yellow bg-font-yellow text-nowrap">Giảm<sup>(4)</sup></th>
-                        <th class="text-right bg-yellow bg-font-yellow text-nowrap">Phí v.chuyển<sup>(5)</sup></th>
-                        <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="Tổng tiền trước thuế: (6) = (3) - (4) + (5)">Tổng cộng<sup>(6)</sup></th>
-                        <th class="text-right bg-yellow bg-font-yellow text-nowrap">Tiền VAT<sup>(7)</sup></th>
-                        <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="Tổng cần thanh toán (đã gồm VAT): (8) = (6) + (7)">Tổng thanh toán<sup>(8)</sup></th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="Tổng tiền trước thuế: (5) = (3) - (4) + (5)">Tổng cộng<sup>(5)</sup></th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap">Tiền VAT<sup>(6)</sup></th>
+                        <th class="text-right bg-yellow bg-font-yellow text-nowrap" title="Tổng cần thanh toán (đã gồm VAT): (7) = (5) + (6)">Tổng thanh toán<sup>(7)</sup></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,7 +37,6 @@
                         <td class="bg-green text-right"><strong><%= @order.items_count %></strong></td>
                         <td class="bg-green text-right"><strong><%= format_price(@order.subtotal) %></strong></td>
                         <td class="bg-green text-right"><strong><%= @order.discount_amount == 0 ? '' : format_price(@order.discount_amount) %></strong></td>
-                        <td class="bg-green text-right"><strong><%= @order.shipping_amount == 0 ? '' : format_price(@order.shipping_amount) %></strong></td>
                         <td class="bg-green text-right"><strong><%= format_price(@order.total_without_tax) %></strong></td>
                         <td class="bg-green text-right"><strong><%= format_price(@order.cache_tax_amount) %></strong></td>
                         <td class="bg-green text-right"><strong><%= format_price(@order.cache_total) %></strong></td>
@@ -51,7 +49,6 @@
                             <td class="text-right"><%= format_number(order_detail.quantity) %></td>
                             <td class="text-right"><%= format_price(order_detail.subtotal) %></td>
                             <td class="text-right"><%= order_detail.discount.nil? ? '' : format_price(order_detail.discount) %></td>
-                            <td class="text-right"><%= order_detail.shipping_fee.nil? ? '' : format_price(order_detail.shipping_fee) %></td>
                             <td class="text-right"><%= format_price(order_detail.total_without_tax) %></td>
                             <td class="text-right"><%= format_price(order_detail.tax_amount) %></td>
                             <td class="text-right"><%= format_price(order_detail.total) %></td>
@@ -60,7 +57,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <% if @order.payment_records.present? %>
         <div class="tab-pane" id="tab_5_2">
             <table class="table table-bordered table-advance order-column">
@@ -79,7 +76,7 @@
                 </thead>
                 <tbody>
                     <% @order.payment_records.each do |payment_record| %>
-                        <tr>                            
+                        <tr>
                             <td class="text-left">
                                 <strong><%= link_to payment_record.code, erp_payments.backend_payment_record_path(payment_record), target: '_blank' %></strong>
                             </td>

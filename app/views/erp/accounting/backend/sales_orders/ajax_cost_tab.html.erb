@@ -1,0 +1,54 @@
+    <table class="table table-bordered table-advance order-column">
+        <thead class="flip-content">
+            <tr>
+                <th width="25%" class="text-left bg-yellow bg-font-yellow text-nowrap">Sản phẩm</th>
+                <th class="bg-yellow bg-font-yellow text-nowrap">ĐVT</th>
+                <th class="text-right bg-yellow bg-font-yellow text-nowrap">Giá bán</th>
+                <th class="text-right bg-yellow bg-font-yellow text-nowrap">Giá vốn</th>
+                <th class="text-center bg-yellow bg-font-yellow text-nowrap">Số lượng</th>
+                <th class="text-right bg-yellow bg-font-yellow text-nowrap">Tổng bán</th>
+                <th class="text-right bg-yellow bg-font-yellow text-nowrap">Tổng vốn</th>
+                <!--<th class="text-right bg-yellow bg-font-yellow text-nowrap">Chênh lệch</th>-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="bg-green text-right" colspan="4"><strong> TỔNG CỘNG </strong></td>
+                <td class="bg-green text-center"><strong><%= @order.items_count %></strong></td>
+                <td class="bg-green text-right"><strong><%= format_price(@order.subtotal) %></strong></td>
+                <td class="bg-green text-right"><strong><%= format_price(@order.cost_total) %></strong></td>
+                <!--<td class="bg-green text-right"><strong>--</strong></td>-->
+            </tr>
+            <% @order.order_details.each do |order_detail| %>
+                <tr>
+                    <td class="text-left">
+                        <input type="hidden" name="order[order_details_attributes][<%= order_detail.id %>][id]" value="<%= order_detail.id %>" />
+                        <input type="hidden" name="order[order_details_attributes][<%= order_detail.id %>][product_id]" value="<%= order_detail.product_id %>" />
+                        <strong><%= order_detail.product_name %></strong>
+                    </td>
+                    <td class="text-left"><%= order_detail.product_unit_name %></td>
+                    <td class="text-right"><%= format_price(order_detail.price) %></td>
+                    <td class="text-right inline-form" width="15%">
+                        <%= erp_form_control("number", {
+                            name: 'order[order_details_attributes]['+order_detail.id.to_s+'][cost_price]',
+                            value: order_detail.cost_price,
+                            class: "line_commission_amount inline"
+                        }) %>
+                        <% if order_detail.get_default_purchase_price.present? %>
+                            <div class="font-yellow text-small text-semibold" style="font-size: 70%"
+                                title="Chuyên mục: <%= order_detail.product.category_name %> / Số lượng: <%= order_detail.get_default_purchase_price.display_min_max %> / Giá bán: <%= format_number(order_detail.get_default_purchase_price.price) %>">
+                                Mặc định: <%= format_price(order_detail.get_default_purchase_price.price) %>
+                               <span hidden class="line_fill_price">
+                                   <%= order_detail.get_default_purchase_price.price %>
+                               </span>
+                            </div>
+                        <% end %>
+                    </td>
+                    <td class="text-center"><%= format_number(order_detail.quantity) %></td>
+                    <td class="text-right"><%= format_price(order_detail.subtotal) %></td>
+                    <td class="text-right"><strong><%= format_price(order_detail.cost_total) %></strong></td>
+                    <!--<td class="text-right"><strong>--</strong></td>-->
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
