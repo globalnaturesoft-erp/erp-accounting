@@ -8,9 +8,16 @@ Erp::Qdeliveries::Delivery.class_eval do
   PAYMENT_STATUS_OVERPAID = 'overpaid'
 
   # Trường hợp phiếu delivery đã hủy và (có/đã) thanh toán thì hiển thị thế nào?
-  def self.accounting_deliveries
+  def self.accounting_sales_deliveries
     self.where(status: Erp::Qdeliveries::Delivery::STATUS_DELIVERED)
         .where(delivery_type: Erp::Qdeliveries::Delivery::TYPE_SALES_IMPORT)
+        .where(payment_for: Erp::Qdeliveries::Delivery::PAYMENT_FOR_ORDER)
+  end
+  
+  def self.accounting_purchase_deliveries
+    self.where(status: Erp::Qdeliveries::Delivery::STATUS_DELIVERED)
+        .where(delivery_type: Erp::Qdeliveries::Delivery::TYPE_PURCHASE_IMPORT)
+        .where(payment_for: Erp::Qdeliveries::Delivery::PAYMENT_FOR_ORDER)
   end
 
   # set payment status
@@ -43,12 +50,21 @@ Erp::Qdeliveries::Delivery.class_eval do
   end
 
   # get waiting qdeliveries not paid
-  def self.get_waiting_not_paid_return_deliveries
-    self.accounting_deliveries
+  def self.get_waiting_not_paid_return_sales_deliveries
+    self.accounting_sales_deliveries
       .where(cache_payment_status: [self::PAYMENT_STATUS_OWING, self::PAYMENT_STATUS_OVERPAID])
   end
 
-  def self.get_waiting_not_paid_return_deliveries_count
-    self.get_waiting_not_paid_return_deliveries.count
+  def self.get_waiting_not_paid_return_sales_deliveries_count
+    self.get_waiting_not_paid_return_sales_deliveries.count
+  end
+  
+  def self.get_waiting_not_paid_return_purchase_deliveries
+    self.accounting_purchase_deliveries
+      .where(cache_payment_status: [self::PAYMENT_STATUS_OWING, self::PAYMENT_STATUS_OVERPAID])
+  end
+
+  def self.get_waiting_not_paid_return_purchase_deliveries_count
+    self.get_waiting_not_paid_return_purchase_deliveries.count
   end
 end

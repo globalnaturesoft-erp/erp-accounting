@@ -1,0 +1,103 @@
+<div class="tabbable-custom ">
+    <ul class="nav nav-tabs ">
+        <li class="active">
+            <a href="#tab_5_1" data-toggle="tab">
+                <i class="glyphicon glyphicon-list-alt"></i>
+                <%= t('.product_return_details') %>
+            </a>
+        </li>
+        <% if @product_return.payment_records.present? %>
+        <li>
+            <a href="#tab_5_2" data-toggle="tab">
+                <i class="glyphicon glyphicon-usd"></i>
+                <%= t('.payment_details') %>
+            </a>
+        </li>
+        <% end %>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_5_1">
+            <table class="table table-bordered table-striped flip-content">
+                <thead class="flip-content">
+                    <tr>
+                        <th width="20%" class="bg-yellow bg-font-yellow text-nowrap text-center">Tên sản phẩm</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">ĐVT</th>
+                        <th width="15%" class="bg-yellow bg-font-yellow text-nowrap text-center">Hóa đơn liên quan</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">SL trả hàng</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center" title="Giá phải trả lại cho khách hàng trên 1 đơn vị sản phẩm">Giá trả</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Tổng trả</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Tình trạng</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Kho nhập</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="bg-green bold" colspan="3">Tổng cộng</td>
+                        <td class="bg-green bold text-center"><%= @product_return.total_delivery_quantity %></td>
+                        <td class="bg-green"></td>
+                        <td class="bg-green bold text-right"><%= format_price(@product_return.total_amount) %></td>
+                        <td class="bg-green" colspan="3"></td>
+                    </tr>
+                    <% @product_return.delivery_details.each do |delivery_detail| %>
+                        <tr>
+                            <td class="bold text-left"><%= delivery_detail.product_name %></td>
+                            <td class="text-left"><%= delivery_detail.product_unit %></td>
+                            <td class="text-left">
+                                <% if delivery_detail.order_detail_id.nil? %>
+                                    Không chứng từ
+                                <% else %>
+                                    <%= delivery_detail.get_order_code %>
+                                <% end %>
+                            </td>
+                            <td class="text-center"><%= delivery_detail.quantity %></td>
+                            <td class="text-right"><%= format_price(delivery_detail.price) %></td>
+                            <td class="text-right"><%= format_price(delivery_detail.total_amount) %></td>
+                            <td class="text-center"><%= delivery_detail.state_name %></td>
+                            <td class="text-center"><%= delivery_detail.warehouse_name %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+        <% if @product_return.payment_records.present? %>
+        <div class="tab-pane" id="tab_5_2">
+            <table class="table table-bordered table-advance order-column">
+                <thead class="flip-content">
+                    <tr>
+                        <th width="15%" class="text-left bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.payment_code') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.payment_type') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.contact') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.amount') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.payment_date') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.description') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.accountant') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.creator') %></th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center"><%= t('.actions') %></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @product_return.payment_records.each do |payment_record| %>
+                        <tr>                            
+                            <td class="text-left"><strong><%= payment_record.code %></strong></td>
+                            <td class="text-left"><%= payment_record.pay_receive == Erp::Payments::PaymentRecord::TYPE_PAY ? t('.pay') : t('.receive') %></td>
+                            <td class="text-left"><%= payment_record.customer_name %></td>
+                            <td class="text-left"><%= format_price(payment_record.amount) %></td>
+                            <td class="text-left"><%= format_date(payment_record.payment_date) %></td>
+                            <td class="text-justify"><%= payment_record.description %></td>
+                            <td class="text-center">
+                                <%= payment_record.accountant_name %>
+                            </td>
+                            <td class="text-center">
+                                <%= payment_record.creator_name %>
+                            </td>
+                            <td>
+                                <%= accounting_payment_record_dropdown_actions(payment_record) %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+        <% end %>
+    </div>
+</div>

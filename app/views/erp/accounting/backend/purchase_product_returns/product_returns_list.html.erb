@@ -7,8 +7,8 @@
             <% if get_columns(params).include?("delivery_code") %>
                 <th width='15%'><%= t('.delivery_code') %></th>
             <% end %>
-            <% if get_columns(params).include?("customer") %>
-                <th width="20%"><%= t('.customer') %></th>
+            <% if get_columns(params).include?("supplier") %>
+                <th width="20%"><%= t('.supplier') %></th>
             <% end %>
             <% if get_columns(params).include?("delivery_date") %>
                 <th class="sortable" sort-by='erp_qdeliveries_deliveries.date'>
@@ -27,9 +27,6 @@
             <% if get_columns(params).include?("status") %>
                 <th><%= t('status') %></th>
             <% end %>
-            <% if get_columns(params).include?("employee") %>
-                <th><%= t('.employee') %></th>
-            <% end %>
             <% if get_columns(params).include?("creator") %>
                 <th><%= t('creator') %></th>
             <% end %>
@@ -41,7 +38,7 @@
     </thead>
     <tbody>
         <% @product_returns.each do |product_return| %>
-            <tr class="odd gradeX has-child-table" data-url="<%= erp_accounting.product_return_details_backend_product_returns_path(id: product_return.id) %>">
+            <tr class="odd gradeX has-child-table" data-url="<%= erp_accounting.product_return_details_backend_purchase_product_returns_path(id: product_return.id) %>">
                 <td>
                     <%= erp_datalist_check_row(id: product_return.id) %>
                 </td>
@@ -51,8 +48,8 @@
                         <strong><%= product_return.code %></strong>
                     </td>
                 <% end %>
-                <% if get_columns(params).include?("customer") %>
-                    <td width="20%"><%= product_return.customer_name %></td>
+                <% if get_columns(params).include?("supplier") %>
+                    <td width="20%"><%= product_return.supplier_name %></td>
                 <% end %>
                 <% if get_columns(params).include?("delivery_date") %>
                     <td><%= format_date(product_return.date) %></td>
@@ -69,13 +66,6 @@
                 <% if get_columns(params).include?("status") %>
                     <td>
                         <%= status_label(product_return.cache_payment_status) %>
-                    </td>
-                <% end %>
-                <% if get_columns(params).include?("employee") %>
-                    <td>
-                        <%= erp_component('avatar', {
-                            user: product_return.employee
-                        }) %>
                     </td>
                 <% end %>
                 <% if get_columns(params).include?("creator") %>

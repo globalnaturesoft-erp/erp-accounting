@@ -19,8 +19,15 @@ Erp::Accounting::Engine.routes.draw do
           get 'purchase_order_details'
 				end
 			end
-
-			resources :product_returns do
+			
+			resources :sales_product_returns do
+				collection do
+					post 'product_returns_list'
+          get 'product_return_details'
+				end
+			end
+			
+			resources :purchase_product_returns do
 				collection do
 					post 'product_returns_list'
           get 'product_return_details'

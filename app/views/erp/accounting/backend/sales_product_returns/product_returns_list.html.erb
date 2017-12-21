@@ -1,0 +1,100 @@
+<table class="table table-advance table-hover table-striped table-checkable order-column">
+    <thead>
+        <tr>
+            <th width='1%'>
+                <%= erp_datalist_check_all %>
+            </th>
+            <% if get_columns(params).include?("delivery_code") %>
+                <th width='15%'><%= t('.delivery_code') %></th>
+            <% end %>
+            <% if get_columns(params).include?("customer") %>
+                <th width="20%"><%= t('.customer') %></th>
+            <% end %>
+            <% if get_columns(params).include?("delivery_date") %>
+                <th class="sortable" sort-by='erp_qdeliveries_deliveries.date'>
+                    <%= t('.delivery_date') %>
+                </th>
+            <% end %>
+            <% if get_columns(params).include?("total_amount") %>
+                <th class="text-right"><%= t('.total_amount') %></th>
+            <% end %>
+            <% if get_columns(params).include?("paid_amount") %>
+                <th class="text-right"><%= t('.paid_amount') %></th>
+            <% end %>
+            <% if get_columns(params).include?("remain_amount") %>
+                <th class="text-right"><%= t('.remain_amount') %></th>
+            <% end %>
+            <% if get_columns(params).include?("status") %>
+                <th><%= t('status') %></th>
+            <% end %>
+            <% if get_columns(params).include?("employee") %>
+                <th><%= t('.employee') %></th>
+            <% end %>
+            <% if get_columns(params).include?("creator") %>
+                <th><%= t('creator') %></th>
+            <% end %>
+            <% if get_columns(params).include?("created_at") %>
+                <th><%= t('created_at') %></th>
+            <% end %>
+            <th width="7%"><%= t('actions') %></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @product_returns.each do |product_return| %>
+            <tr class="odd gradeX has-child-table" data-url="<%= erp_accounting.product_return_details_backend_sales_product_returns_path(id: product_return.id) %>">
+                <td>
+                    <%= erp_datalist_check_row(id: product_return.id) %>
+                </td>
+                <% if get_columns(params).include?("delivery_code") %>
+                    <td>
+                        <i class="fa fa-plus expand tr-expand-button"></i>
+                        <strong><%= product_return.code %></strong>
+                    </td>
+                <% end %>
+                <% if get_columns(params).include?("customer") %>
+                    <td width="20%"><%= product_return.customer_name %></td>
+                <% end %>
+                <% if get_columns(params).include?("delivery_date") %>
+                    <td><%= format_date(product_return.date) %></td>
+                <% end %>
+                <% if get_columns(params).include?("total_amount") %>
+                    <td class="text-right"><%= format_price(product_return.total_amount) %></td>
+                <% end %>
+                <% if get_columns(params).include?("paid_amount") %>
+                    <td class="text-right"><%= format_price(product_return.paid_amount) %></td>
+                <% end %>
+                <% if get_columns(params).include?("remain_amount") %>
+                    <td class="text-right"><%= format_price(product_return.remain_amount) %></td>
+                <% end %>
+                <% if get_columns(params).include?("status") %>
+                    <td>
+                        <%= status_label(product_return.cache_payment_status) %>
+                    </td>
+                <% end %>
+                <% if get_columns(params).include?("employee") %>
+                    <td>
+                        <%= erp_component('avatar', {
+                            user: product_return.employee
+                        }) %>
+                    </td>
+                <% end %>
+                <% if get_columns(params).include?("creator") %>
+                    <td>
+                        <%= erp_component('avatar', {
+                            user: product_return.creator
+                        }) %>
+                    </td>
+                <% end %>
+                <% if get_columns(params).include?("created_at") %>
+                    <td><%= format_date(product_return.created_at) %></td>
+                <% end %>
+                <td><%= accounting_delivery_dropdown_actions(product_return) %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+<% if @product_returns.empty? %>
+    <div class="datalist-empty-line"><%= t('.no_matching_records_found') %></div>
+<% end %>
+        
+<%= erp_datalist_pagination(@product_returns) %>

@@ -37,7 +37,9 @@
                 name: 'customer',
                 label: t('.filter_customer'),
                 placeholder: t('.choose_customer'),
-                url: erp_contacts.dataselect_backend_contacts_path(format: 'json', is_customer: true),
+                url: erp_contacts.dataselect_backend_contacts_path(format: 'json',
+                    is_customer: true,
+                    contact_id: Erp::Contacts::Contact.get_main_contact),
             }) %>
         </div>
     </div>

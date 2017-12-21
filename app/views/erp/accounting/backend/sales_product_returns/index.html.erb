@@ -1,0 +1,114 @@
+<% content_for :title do %>
+    <%= t('.product_returns') %>
+<% end %>
+
+<% content_for :page_title do %>
+    <i class="fa fa-reply"></i> <%= t('.product_returns') %>
+<% end %>
+
+<% content_for :global_filter do %>
+    <div class="row top-datalist">
+        <div class="col-md-3">
+            <%= erp_form_control('date', {
+                label: t('.from_date'),
+                name: 'from_date',
+                placeholder: t('.select_from_date')
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control('date', {
+                label: t('.to_date'),
+                name: 'to_date',
+                placeholder: t('.select_to_date')
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control("dataselect", {
+                name: 'period',
+                label: t('.filter_period'),
+                placeholder: t('.choose_period'),
+                url: erp_periods.dataselect_backend_periods_path(format: 'json')
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control("dataselect", {
+                name: 'customer',
+                label: t('.filter_customer'),
+                placeholder: t('.choose_customer'),
+                url: erp_contacts.dataselect_backend_contacts_path(format: 'json', is_customer: true),
+            }) %>
+        </div>
+    </div>
+<% end %>
+
+<%= erp_datalist(
+    url: erp_accounting.product_returns_list_backend_sales_product_returns_path,
+    keywords: [
+        {
+            text: t('.delivery_code'), name: 'erp_qdeliveries_deliveries.code'
+        },
+        {
+            text: t('.employee'),
+            name: 'erp_users.name',
+            select: {
+                name: 'erp_qdeliveries_deliveries.employee_id',
+                data_url: erp.dataselect_backend_users_path
+            }
+        },
+        {
+            text: t('creator'),
+            name: 'erp_users.name',
+            select: {
+                name: 'erp_users.id',
+                data_url: erp.dataselect_backend_users_path
+            }
+        }
+    ],
+    actions: [
+        
+    ],
+    filters: [
+        {
+            text: t('.owing'), name: 'cache_payment_status', value: Erp::Qdeliveries::Delivery::PAYMENT_STATUS_OWING, checked: true
+        },
+        {
+            text: t('.paid'), name: 'cache_payment_status', value: Erp::Qdeliveries::Delivery::PAYMENT_STATUS_PAID, checked: false
+        },
+        {
+            text: t('.overpaid'), name: 'cache_payment_status', value: Erp::Qdeliveries::Delivery::PAYMENT_STATUS_OVERPAID, checked: true
+        }
+    ],
+    columns: [
+        {
+            text: t('.delivery_code'), name: 'delivery_code', value: true, checked: true
+        },
+        {
+            text: t('.customer'), name: 'customer', value: true, checked: true
+        },
+        {
+            text: t('.delivery_date'), name: 'delivery_date', value: true, checked: true
+        },
+        {
+            text: t('.total_amount'), name: 'total_amount', value: true, checked: true
+        },
+        {
+            text: t('.paid_amount'), name: 'paid_amount', value: true, checked: true
+        },
+        {
+            text: t('.remain_amount'), name: 'remain_amount', value: true, checked: true
+        },
+        {
+            text: t('status'), name: 'status', value: true, checked: true
+        },
+        {
+            text: t('.employee'), name: 'employee', value: true, checked: true
+        },
+        {
+            text: t('creator'), name: 'creator', value: true, checked: false
+        },
+        {
+            text: t('created_at'), name: 'created_at', value: true, checked: false
+        }
+    ],
+    sort: { sort_by: '', sort_direction: 'desc' }
+) %>
