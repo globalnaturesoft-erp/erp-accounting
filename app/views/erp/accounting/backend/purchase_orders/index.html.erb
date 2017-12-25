@@ -6,6 +6,15 @@
     <i class="fa fa-file-text"></i> <%= t('.purchase_orders') %>
 <% end %>
 
+<% content_for :page_toolbar do %>
+    <%= erp_component('button/create', {
+        text: t('.create_purchase_order'),
+        href: erp_orders.new_backend_order_path(type: Erp::Orders::Order::TYPE_PURCHASE_ORDER),
+        class: 'btn-noborder',
+        target: '_blank'
+    }) %>
+<% end %>
+
 <% content_for :global_filter do %>
     <div class="row top-datalist">
         <div class="col-md-3">
