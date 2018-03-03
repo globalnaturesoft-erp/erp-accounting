@@ -2,7 +2,7 @@ module Erp
   module Accounting
     module Backend
       class SalesOrdersController < Erp::Backend::BackendController
-        before_action :set_order, only: [:ajax_update_order]
+        before_action :set_order, only: [:ajax_update_order, :ajax_commission_order]
 
         # POST /sales orders/list
         def sales_orders_list
@@ -26,6 +26,15 @@ module Erp
           end
         end
 
+        def ajax_commission_order
+          authorize! :update, @order
+
+          if @order.update(order_params)
+            @order.update_default_cost_price
+            render 'erp/accounting/backend/sales_orders/ajax_commission_tab'
+          end
+        end
+
         private
           def set_order
             @order = Erp::Orders::Order.find(params[:id])
@@ -33,7 +42,7 @@ module Erp
 
           def order_params
             params.fetch(:order, {}).permit(:order_details_attributes => [
-              :id, :product_id, :cost_price
+              :id, :product_id, :cost_price, :price, :customer_commission, :commission
             ])
           end
 

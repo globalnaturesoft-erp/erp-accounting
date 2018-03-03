@@ -27,12 +27,27 @@
                         <strong><%= order_detail.product_name %></strong>
                     </td>
                     <td class="text-left"><%= order_detail.product_unit_name %></td>
-                    <td class="text-right"><%= format_price(order_detail.price) %></td>
+                    <td class="text-right">
+                        <%= erp_form_control("number", {
+                            name: 'order[order_details_attributes]['+order_detail.id.to_s+'][price]',
+                            value: order_detail.price,
+                            class: "inline"
+                        }) %>
+                        <% if order_detail.get_default_price.present? %>
+                            <div class="font-yellow text-small text-semibold" style="font-size: 70%"
+                                title="Chuyên mục: <%= order_detail.product.category_name %> / Số lượng: <%= order_detail.get_default_price.display_min_max %> / Giá bán: <%= format_number(order_detail.get_default_price.price) %>">
+                                Mặc định: <%= format_price(order_detail.get_default_price.price) %>
+                               <span hidden class="line_fill_price">
+                                   <%= order_detail.get_default_price.price %>
+                               </span>
+                            </div>
+                        <% end %>
+                    </td>
                     <td class="text-right inline-form" width="15%">
                         <%= erp_form_control("number", {
                             name: 'order[order_details_attributes]['+order_detail.id.to_s+'][cost_price]',
                             value: order_detail.cost_price,
-                            class: "line_commission_amount inline"
+                            class: "inline"
                         }) %>
                         <% if order_detail.get_default_purchase_price.present? %>
                             <div class="font-yellow text-small text-semibold" style="font-size: 70%"

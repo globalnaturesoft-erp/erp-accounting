@@ -1,0 +1,63 @@
+    <table class="table table-bordered table-advance order-column">
+        <thead class="flip-content">
+            <tr>
+                <th width="25%" class="text-left bg-yellow bg-font-yellow text-nowrap">Sản phẩm</th>
+                <th class="bg-yellow bg-font-yellow text-nowrap">ĐVT</th>
+                <th class="text-right bg-yellow bg-font-yellow text-nowrap">Giá bán</th>
+                <th class="text-center bg-yellow bg-font-yellow text-nowrap">Số lượng</th>
+                <th class="text-right bg-yellow bg-font-yellow text-nowrap">Tổng bán</th>
+                <% if @order.payment_for == Erp::Orders::Order::PAYMENT_FOR_CONTACT %>
+                  <th class="text-right bg-yellow bg-font-yellow text-nowrap">Chiếu khấu KH</th>
+                <% else %>
+                  <th class="text-right bg-yellow bg-font-yellow text-nowrap">Hoa hồng NV</th>
+                <% end %>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="bg-green text-right" colspan="3"><strong> TỔNG CỘNG </strong></td>
+                <td class="bg-green text-center"><strong><%= @order.items_count %></strong></td>
+                <td class="bg-green text-right"><strong><%= format_price(@order.subtotal) %></strong></td>
+                <td class="bg-green text-right">
+                  <strong>
+                    <% if @order.payment_for == Erp::Orders::Order::PAYMENT_FOR_CONTACT %>
+                      <%= format_price(@order.customer_commission_amount) %>
+                    <% else %>
+                      <%= format_price(@order.commission_amount) %>
+                    <% end %>
+                  </strong>
+                </td>
+            </tr>
+            <% @order.order_details.each do |order_detail| %>
+                <tr>
+                    <td class="text-left">
+                        <input type="hidden" name="order[order_details_attributes][<%= order_detail.id %>][id]" value="<%= order_detail.id %>" />
+                        <input type="hidden" name="order[order_details_attributes][<%= order_detail.id %>][product_id]" value="<%= order_detail.product_id %>" />
+                        <strong><%= order_detail.product_name %></strong>
+                    </td>
+                    <td class="text-left"><%= order_detail.product_unit_name %></td>
+                    <td class="text-right">
+                        <%= format_price(order_detail.price) %>
+                    </td>
+                    <td class="text-center"><%= format_number(order_detail.quantity) %></td>
+                    <td class="text-right"><%= format_price(order_detail.subtotal) %></td>
+                    <td class="text-right">
+                      <% if @order.payment_for == Erp::Orders::Order::PAYMENT_FOR_CONTACT %>
+                        <%= erp_form_control("number", {
+                            name: 'order[order_details_attributes]['+order_detail.id.to_s+'][customer_commission]',
+                            value: order_detail.customer_commission_amount.to_f,
+                            class: "inline"
+                        }) %>
+                      <% else %>
+                        <%= erp_form_control("number", {
+                            name: 'order[order_details_attributes]['+order_detail.id.to_s+'][commission]',
+                            value: order_detail.commission_amount.to_f,
+                            class: "inline"
+                        }) %>
+                      <% end %>
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>

@@ -10,7 +10,17 @@
         <li class="">
             <a href="#tab_<%= tabid %>_2" data-toggle="tab">
                 <i class="glyphicon glyphicon-list-alt"></i>
-                Giá vốn & Chênh lệch
+                Giá & Chênh lệch
+            </a>
+        </li>
+        <li class="">
+            <a href="#tab_<%= tabid %>_3" data-toggle="tab">
+                <i class="glyphicon glyphicon-list-alt"></i>
+                <% if @order.payment_for == Erp::Orders::Order::PAYMENT_FOR_CONTACT %>
+                    Chiết khấu KH
+                <% else %>
+                    Hoa hồng NV
+                <% end %>
             </a>
         </li>
         <% if @order.payment_records.present? %>
@@ -71,6 +81,17 @@
                     <%= render template: 'erp/accounting/backend/sales_orders/ajax_cost_tab' %>
                 </div>
                 <div class="text-left">
+                    <input type='submit' class="btn green-seagreen" name="act_save_with_default" value="Cập nhật" />
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-pane" id="tab_<%= tabid %>_3">
+            <form class="ajax-form" target="_blank" action="<%= erp_accounting.ajax_commission_order_backend_sales_orders_path(id: @order.id) %>" method="POST">
+                <div class="ajax-content">
+                    <%= render template: 'erp/accounting/backend/sales_orders/ajax_commission_tab' %>
+                </div>
+                <div class="text-right">
                     <input type='submit' class="btn green-seagreen" name="act_save_with_default" value="Cập nhật" />
                 </div>
             </form>
