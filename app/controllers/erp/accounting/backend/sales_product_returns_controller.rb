@@ -4,7 +4,7 @@ module Erp
       class SalesProductReturnsController < Erp::Backend::BackendController
         def product_returns_list
           @product_returns = Erp::Qdeliveries::Delivery.search(params)
-            .accounting_sales_deliveries
+            .accounting_sales_deliveries.get_deliveries_with_payment_for_order
             .paginate(:page => params[:page], :per_page => 10)
           render layout: nil
         end
