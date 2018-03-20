@@ -42,7 +42,7 @@ module Erp
 
           def order_params
             params.fetch(:order, {}).permit(:order_details_attributes => [
-              :id, :product_id, :cost_price, :price, :customer_commission, :commission
+              :id, :product_id, :cost_price, :price, :customer_commission, :commission, :discount
             ])
           end
 
