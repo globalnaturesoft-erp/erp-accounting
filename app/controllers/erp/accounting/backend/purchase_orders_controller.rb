@@ -6,7 +6,7 @@ module Erp
         # POST /sales orders/list
         def purchase_orders_list
           @orders = Erp::Orders::Order.search(params)
-            .accounting_purchase_orders.payment_for_order_orders # @todo move 'where' to model
+            .accounting_purchase_orders # @todo move 'where' to model
             .paginate(:page => params[:page], :per_page => 10)
           render layout: nil
         end

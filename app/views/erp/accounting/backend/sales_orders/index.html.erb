@@ -82,6 +82,15 @@
     ],
     filters: [
         {
+            text: 'Bán lẻ (PK)', name: 'payment_for', value: Erp::Orders::Order::PAYMENT_FOR_ORDER, checked: true
+        },
+        {
+            text: 'Công nợ', name: 'payment_for', value: Erp::Orders::Order::PAYMENT_FOR_CONTACT, checked: false
+        },
+        {
+            divider: true
+        },
+        {
             text: t('.overdue'), name: 'cache_payment_status', value: Erp::Orders::Order::PAYMENT_STATUS_OVERDUE, checked: true
         },
         {
