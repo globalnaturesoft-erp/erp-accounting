@@ -6,11 +6,15 @@ Erp::Ability.class_eval do
     end
     
     can :receive_sales_order, Erp::Orders::Order do |order|
-      order.sales? and order.remain_amount > 0
+      if order.payment_for == Erp::Orders::Order::PAYMENT_FOR_ORDER
+        order.sales? and order.remain_amount > 0
+      end
     end
     
     can :pay_sales_order, Erp::Orders::Order do |order|
-      order.sales? and order.remain_amount < 0
+      if order.payment_for == Erp::Orders::Order::PAYMENT_FOR_ORDER
+        order.sales? and order.remain_amount < 0
+      end
     end
     
     can :receive_purchase_order, Erp::Orders::Order do |order|
