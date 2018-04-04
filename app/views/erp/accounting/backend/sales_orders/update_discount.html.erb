@@ -1,0 +1,76 @@
+<% content_for :title do %>
+    Cập nhật giảm giá
+<% end %>
+
+<% content_for :page_title do %>
+    <i class="fa fa-file-text"></i> Cập nhật giảm giá
+<% end %>
+
+<% content_for :page_toolbar do %>
+<% end %>
+
+<% content_for :global_filter do %>
+    <div class="row top-datalist">
+        <div class="col-md-3">
+            <%= erp_form_control('date', {
+                label: 'Từ ngày',
+                name: 'from_date',
+                placeholder: 'Chọn ngày'
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control('date', {
+                label: 'Đến ngày',
+                name: 'to_date',
+                placeholder: 'Chọn ngày'
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control('dataselect', {
+                label: 'Mốc thời gian',
+                name: 'period',
+                value: nil,
+                text: nil,
+                placeholder: 'Chọn khoảng thời gian',
+                url: erp_periods.dataselect_backend_periods_path(format: 'json'),
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control("dataselect", {
+                name: 'customer',
+                label: 'Khách hàng',
+                placeholder: 'Chọn theo khách hàng',
+                url: erp_contacts.dataselect_backend_contacts_path(format: 'json',
+                    is_customer: true,
+                    contact_id: Erp::Contacts::Contact.get_main_contact),
+            }) %>
+        </div>
+    </div>
+    <div class="row top-datalist">
+        <div class="col-md-3">
+            <%= erp_form_control("text", {
+                name: 'discount_percent',
+                label: 'Phần trăm giảm giá (%)',
+                placeholder: 'Nhập phần trăm giảm giá'
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control("dataselect", {
+                name: 'categories',
+                label: 'Chuyên mục sản phẩm',
+                placeholder: 'Tất cả chuyên mục',
+                url: erp_products.dataselect_backend_categories_path(format: 'json'),
+                multiple: true
+            }) %>
+        </div>
+        <div class="col-md-6 text-right mt-25">
+            <a href="javascript:;" class="btn btn-primary global-filter-button">Tính giảm giá</a>
+        </div>
+    </div>
+<% end %>
+
+<%= erp_datalist(
+    url: erp_accounting.update_discount_table_backend_sales_orders_path,
+    autoload: false,
+    placeholder: 'Vui lòng chọn vùng cần xem và nhấn Tính giảm giá'
+) %>

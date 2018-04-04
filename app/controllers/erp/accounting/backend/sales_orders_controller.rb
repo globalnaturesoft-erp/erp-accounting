@@ -34,6 +34,94 @@ module Erp
             render 'erp/accounting/backend/sales_orders/ajax_commission_tab'
           end
         end
+        
+        def update_discount_table
+          @orders = Erp::Orders::Order.search(params)
+            .accounting_sales_orders            
+            
+          @full_orders = @orders
+          
+          # filter
+          filters = params.to_unsafe_hash[:global_filter]
+          
+          # if has period
+          if filters[:period].present?
+            @period = Erp::Periods::Period.find(filters[:period])
+            filters[:from_date] = @period.from_date
+            filters[:to_date] = @period.to_date
+          end
+
+          @from_date = filters[:from_date].to_date
+          @to_date = filters[:to_date].to_date
+          
+          # params
+          @customer = filters[:customer].present? ? Erp::Contacts::Contact.find(filters[:customer]) : nil
+          @discount_percent = filters[:discount_percent].present? ? filters[:discount_percent].to_f : nil
+          # get categories
+          category_ids = filters[:categories].present? ? filters[:categories] : nil
+          @categories = Erp::Products::Category.where(id: category_ids)
+          
+          @orders = @orders.paginate(:page => params[:page], :per_page => 100)
+          
+          if @customer.present? and @discount_percent.present? and (@form_date.present? or @to_date.present?)
+            # patient sate table
+            @pstates = {rows: {}, count: 0, amount: 0}
+            
+            # category table
+            @categories_table = {rows: {}, count: 0, amount: 0}
+            
+            
+            cids = @categories.map(&:id)
+            @orders.each do |o|
+              o.patient_state_id = -1
+              
+              # patient sate
+              if @pstates[:rows][o.patient_state_id].present?
+                @pstates[:rows][o.patient_state_id][:count] += 1
+                @pstates[:rows][o.patient_state_id][:total_without_tax] += o.total_without_tax
+              else
+                @pstates[:rows][o.patient_state_id] = {state: Erp::OrthoK::PatientState.where(id: o.patient_state_id).first}
+                @pstates[:rows][o.patient_state_id][:count] = 1
+                @pstates[:rows][o.patient_state_id][:total_without_tax] = o.total_without_tax
+              end
+              
+              @pstates[:count] += 1
+              @pstates[:amount] += o.total_without_tax
+              
+              o.order_details.each do |od|
+                # categories table
+                if @categories_table[:rows][od.product.category_id].present?
+                  @categories_table[:rows][od.product.category_id][:count] += od.quantity
+                  @categories_table[:rows][od.product.category_id][:total_without_tax] += od.total_without_tax
+                else
+                  @categories_table[:rows][od.product.category_id] = {category: od.product.category}
+                  @categories_table[:rows][od.product.category_id][:count] = od.quantity
+                  @categories_table[:rows][od.product.category_id][:total_without_tax] = od.total_without_tax
+                end
+                
+                @categories_table[:count] += od.quantity
+                @categories_table[:amount] += od.total_without_tax
+                
+                if (
+                  !@categories.present? or
+                  cids.include?(od.product.category_id) or
+                  (od.product.category.present? and od.product.category.parent_id.present? and cids.include?(od.product.category.parent_id))
+                )
+                    od.discount = (@discount_percent/100.00)*(od.subtotal)
+                end
+              end              
+            end
+          end
+          
+          render layout: nil
+        end
+        
+        def update_discount_run
+          params.to_unsafe_hash[:order_details].each do |row|
+            od = Erp::Orders::OrderDetail.find(row[0])
+            od.update_attribute(:discount, row[1]["discount"])
+          end
+        end
 
         private
           def set_order

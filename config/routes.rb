@@ -11,6 +11,10 @@ Erp::Accounting::Engine.routes.draw do
 
           post 'ajax_update_order'
           post 'ajax_commission_order'
+          
+          get 'update_discount'
+          post 'update_discount_table'
+          post 'update_discount_run'
 				end
 			end
 

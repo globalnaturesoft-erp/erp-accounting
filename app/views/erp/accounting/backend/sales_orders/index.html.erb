@@ -7,6 +7,20 @@
 <% end %>
 
 <% content_for :page_toolbar do %>
+    <% if Erp::Core.available?("ortho_k") %>
+        <%=
+            actions = []
+            actions << {
+                text: '<i class="fa fa-edit"></i> Cập nhật giảm giá',
+                url: erp_accounting.update_discount_backend_sales_orders_path
+            }
+            erp_component('button/actions', {
+            actions: actions,
+            text: 'Công cụ',
+            class: 'btn-noborder',
+            icon: 'fa fa-clone'
+        }) %>
+    <% end %>
     <%= erp_component('button/create', {
         text: t('.create_customer_order'),
         href: erp_orders.new_backend_order_path(type: Erp::Orders::Order::TYPE_SALES_ORDER),

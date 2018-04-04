@@ -1,0 +1,15 @@
+<% content_for :title do %>
+    Cập nhật giảm giá
+<% end %>
+
+<% content_for :page_title do %>
+    <i class="fa fa-file-text"></i> Cập nhật giảm giá
+<% end %>
+
+<div class="alert alert-success">
+    <p>Thông tin giảm giá đã được cập nhật thành công
+    </p>
+</div>
+<a class="btn btn-primary" href="<%= erp_accounting.update_discount_backend_sales_orders_path %>">
+  Quay trở lại
+</a>
