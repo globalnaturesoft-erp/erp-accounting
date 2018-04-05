@@ -35,6 +35,11 @@ module Erp
           end
         end
         
+        def update_discount
+          @filters = params.to_unsafe_hash[:global_filter]
+          @customer = params[:customer_id].present? ? Erp::Contacts::Contact.find(params[:customer_id]) : nil
+        end
+        
         def update_discount_table
           @orders = Erp::Orders::Order.search(params)
             .accounting_sales_orders            
@@ -63,12 +68,12 @@ module Erp
           
           @orders = @orders.paginate(:page => params[:page], :per_page => 100)
           
-          if @customer.present? and @discount_percent.present? and (@form_date.present? or @to_date.present?)
+          if @customer.present? and (@form_date.present? or @to_date.present?)
             # patient sate table
-            @pstates = {rows: {}, count: 0, amount: 0}
+            @pstates = {rows: {}, count: 0, amount: 0, after_amount: 0}
             
             # category table
-            @categories_table = {rows: {}, count: 0, amount: 0}
+            @categories_table = {rows: {}, count: 0, amount: 0, after_amount: 0}
             
             
             cids = @categories.map(&:id)
@@ -83,13 +88,15 @@ module Erp
                 @pstates[:rows][o.patient_state_id] = {state: Erp::OrthoK::PatientState.where(id: o.patient_state_id).first}
                 @pstates[:rows][o.patient_state_id][:count] = 1
                 @pstates[:rows][o.patient_state_id][:total_without_tax] = o.total_without_tax
+                
+                @pstates[:rows][o.patient_state_id][:after_total_without_tax] = 0
               end
               
               @pstates[:count] += 1
               @pstates[:amount] += o.total_without_tax
               
               o.order_details.each do |od|
-                # categories table
+                # categories table before discount
                 if @categories_table[:rows][od.product.category_id].present?
                   @categories_table[:rows][od.product.category_id][:count] += od.quantity
                   @categories_table[:rows][od.product.category_id][:total_without_tax] += od.total_without_tax
@@ -97,19 +104,30 @@ module Erp
                   @categories_table[:rows][od.product.category_id] = {category: od.product.category}
                   @categories_table[:rows][od.product.category_id][:count] = od.quantity
                   @categories_table[:rows][od.product.category_id][:total_without_tax] = od.total_without_tax
+                  
+                  @categories_table[:rows][od.product.category_id][:after_total_without_tax] = 0
                 end
                 
                 @categories_table[:count] += od.quantity
                 @categories_table[:amount] += od.total_without_tax
                 
-                if (
+                if @discount_percent.present? and (
                   !@categories.present? or
                   cids.include?(od.product.category_id) or
                   (od.product.category.present? and od.product.category.parent_id.present? and cids.include?(od.product.category.parent_id))
                 )
                     od.discount = (@discount_percent/100.00)*(od.subtotal)
                 end
-              end              
+                
+                # categories table before discount
+                @categories_table[:rows][od.product.category_id][:after_total_without_tax] += od.total_without_tax
+                
+                @categories_table[:after_amount] += od.total_without_tax
+              end
+              
+              
+              @pstates[:rows][o.patient_state_id][:after_total_without_tax] += o.total_without_tax              
+              @pstates[:after_amount] += o.total_without_tax
             end
           end
           

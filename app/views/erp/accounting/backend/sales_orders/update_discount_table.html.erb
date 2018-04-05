@@ -1,4 +1,4 @@
-<% if @customer.present? and @discount_percent.present? and (@form_date.present? or @to_date.present?) %>    
+<% if @customer.present? and (@form_date.present? or @to_date.present?) %>    
     <div class="tabbable-custom">
         <ul class="nav nav-tabs ">
             <li class="active">
@@ -33,7 +33,12 @@
                                 <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-right">Đơn giá</th>
                                 <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-center">Số lượng</th>
                                 <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-center">Trước giảm</th>
-                                <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-right">Giảm giá (<%= @discount_percent %>%)</th>
+                                <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-right">
+                                    Giảm giá
+                                    <% if @discount_percent.present?  %>
+                                        (<%= @discount_percent %>%)
+                                    <% end %>
+                                </th>
                                 <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-right">Sau giảm</th>
                                 <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-left">N.viên kinh doanh</th>
                                 <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-center"><%= t('.actions') %></th>
@@ -102,11 +107,15 @@
                                     <td class="text-center bold">Tổng cộng</td>
                                     <td class="stock-num text-center bold font-red-thunderbird"><%= format_price(@pstates[:count]) %></td>
                                     <td class="stock-num text-right bold font-red-thunderbird"><%= format_price(@pstates[:amount]) %></td>
+                                    <td class="stock-num text-right bold font-red-thunderbird"><%= format_price(- @pstates[:after_amount] + @pstates[:amount]) %></td>
+                                    <td class="stock-num text-right bold font-red-thunderbird"><%= format_price(@pstates[:after_amount]) %></td>
                                 </tr>
                                 <tr>
                                     <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-left">Trạng thái</th>
                                     <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-center">Số lượng</th>
                                     <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-right">Số tiền</th>
+                                    <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-right">Giảm giá</th>
+                                    <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-right">Sau giảm</th>
                                 </tr>
                             </thead>
                             <% @pstates[:rows].each do |row| %>
@@ -114,6 +123,8 @@
                                     <td class="text-left text-nowrap bold"><%= row[1][:state].present? ? row[1][:state].name : 'N/A' %></td>
                                     <td class="text-center"><%= row[1][:count] %></td>
                                     <td class="text-right"><%= format_price(row[1][:total_without_tax]) %></td>
+                                    <td class="text-right"><%= format_price(-row[1][:after_total_without_tax] + row[1][:total_without_tax]) %></td>
+                                    <td class="text-right"><%= format_price(row[1][:after_total_without_tax]) %></td>
                                 </tr>
                             <% end %>
                         </table>
@@ -126,11 +137,15 @@
                                     <td class="text-center bold">Tổng cộng</td>
                                     <td class="stock-num text-center bold font-red-thunderbird"><%= format_price(@categories_table[:count]) %></td>
                                     <td class="stock-num text-right bold font-red-thunderbird"><%= format_price(@categories_table[:amount]) %></td>
+                                    <td class="stock-num text-right bold font-red-thunderbird"><%= format_price(- @categories_table[:after_amount] + @categories_table[:amount]) %></td>
+                                    <td class="stock-num text-right bold font-red-thunderbird"><%= format_price(@categories_table[:after_amount]) %></td>
                                 </tr>
                                 <tr>
                                     <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-left">Loại hàng</th>
                                     <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-center">Số lượng</th>
                                     <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-right">Số tiền</th>
+                                    <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-right">Giảm giá</th>
+                                    <th class="bg-blue-madison bg-font-blue-madison border-blue-madison text-nowrap text-right">Sau giảm</th>
                                 </tr>
                             </thead>
                             <% @categories_table[:rows].each do |row| %>
@@ -138,6 +153,8 @@
                                     <td class="text-left text-nowrap bold"><%= row[1][:category].name %></td>
                                     <td class="text-center"><%= row[1][:count] %></td>
                                     <td class="text-right"><%= format_price(row[1][:total_without_tax]) %></td>
+                                    <td class="text-right"><%= format_price(-row[1][:after_total_without_tax] + row[1][:total_without_tax]) %></td>
+                                    <td class="text-right"><%= format_price(row[1][:after_total_without_tax]) %></td>
                                 </tr>
                             <% end %>
                         </table>
@@ -160,9 +177,6 @@
             <% end %>
             <% if !@customer.present? %>
                <br>- <strong>Khách hàng</strong>
-            <% end %>
-            <% if !@discount_percent.present? %>
-                <br>- <strong>Phần trăm giảm giá</strong>
             <% end %>
         </p>
     </div>
