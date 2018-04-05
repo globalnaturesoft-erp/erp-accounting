@@ -80,7 +80,7 @@ module Erp
             
             cids = @categories.map(&:id)
             @orders.each do |o|
-              o.patient_state_id = -1
+              o.patient_state_id = -1 if !o.patient_state_id.present?
               
               # patient sate
               if @pstates[:rows][o.patient_state_id].present?
