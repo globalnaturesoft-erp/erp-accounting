@@ -36,8 +36,10 @@ module Erp
         end
         
         def update_discount
-          @filters = params.to_unsafe_hash[:global_filter]
+          @filters = params.to_unsafe_hash[:global_filter].present? ? params.to_unsafe_hash[:global_filter] : {}
           @customer = params[:customer_id].present? ? Erp::Contacts::Contact.find(params[:customer_id]) : nil
+          
+          session[:update_discount_url] = request.original_url
         end
         
         def update_discount_table
@@ -83,33 +85,33 @@ module Erp
               # patient sate
               if @pstates[:rows][o.patient_state_id].present?
                 @pstates[:rows][o.patient_state_id][:count] += 1
-                @pstates[:rows][o.patient_state_id][:total_without_tax] += o.total_without_tax
+                @pstates[:rows][o.patient_state_id][:total_without_tax] += o.subtotal
               else
                 @pstates[:rows][o.patient_state_id] = {state: Erp::OrthoK::PatientState.where(id: o.patient_state_id).first}
                 @pstates[:rows][o.patient_state_id][:count] = 1
-                @pstates[:rows][o.patient_state_id][:total_without_tax] = o.total_without_tax
+                @pstates[:rows][o.patient_state_id][:total_without_tax] = o.subtotal
                 
                 @pstates[:rows][o.patient_state_id][:after_total_without_tax] = 0
               end
               
               @pstates[:count] += 1
-              @pstates[:amount] += o.total_without_tax
+              @pstates[:amount] += o.subtotal
               
               o.order_details.each do |od|
                 # categories table before discount
                 if @categories_table[:rows][od.product.category_id].present?
                   @categories_table[:rows][od.product.category_id][:count] += od.quantity
-                  @categories_table[:rows][od.product.category_id][:total_without_tax] += od.total_without_tax
+                  @categories_table[:rows][od.product.category_id][:total_without_tax] += od.subtotal
                 else
                   @categories_table[:rows][od.product.category_id] = {category: od.product.category}
                   @categories_table[:rows][od.product.category_id][:count] = od.quantity
-                  @categories_table[:rows][od.product.category_id][:total_without_tax] = od.total_without_tax
+                  @categories_table[:rows][od.product.category_id][:total_without_tax] = od.subtotal
                   
                   @categories_table[:rows][od.product.category_id][:after_total_without_tax] = 0
                 end
                 
                 @categories_table[:count] += od.quantity
-                @categories_table[:amount] += od.total_without_tax
+                @categories_table[:amount] += od.subtotal
                 
                 if @discount_percent.present? and (
                   !@categories.present? or
