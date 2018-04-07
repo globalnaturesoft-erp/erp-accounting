@@ -67,6 +67,18 @@ module Erp
           # get categories
           category_ids = filters[:categories].present? ? filters[:categories] : nil
           @categories = Erp::Products::Category.where(id: category_ids)
+          # get diameters
+          diameter_ids = filters[:diameters].present? ? filters[:diameters] : nil
+          diameter_ids = !diameter_ids.kind_of?(Array) ? [diameter_ids] : diameter_ids if !diameter_ids.nil?
+          # get diameters
+          letter_ids = filters[:letters].present? ? filters[:letters] : nil
+          letter_ids = !letter_ids.kind_of?(Array) ? [letter_ids] : letter_ids if !letter_ids.nil?
+          # get numbers
+          number_ids = filters[:numbers].present? ? filters[:numbers] : nil
+          number_ids = !number_ids.kind_of?(Array) ? [number_ids] : number_ids if !number_ids.nil?
+          # get states
+          state_ids = filters[:price_patient_states].present? ? filters[:price_patient_states] : nil
+          state_ids = !state_ids.kind_of?(Array) ? [state_ids] : state_ids if !state_ids.nil?
           
           @orders = @orders.paginate(:page => params[:page], :per_page => 100)
           
@@ -113,12 +125,21 @@ module Erp
                 @categories_table[:count] += od.quantity
                 @categories_table[:amount] += od.subtotal
                 
-                if @discount_percent.present? and (
-                  !@categories.present? or
-                  cids.include?(od.product.category_id) or
-                  (od.product.category.present? and od.product.category.parent_id.present? and cids.include?(od.product.category.parent_id))
-                )
-                    od.discount = (@discount_percent/100.00)*(od.subtotal)
+                if @discount_percent.present?
+                  if !state_ids.present? or state_ids.include?(o.patient_state_id.to_s)
+                    if (
+                        !@categories.present? or
+                        cids.include?(od.product.category_id) or
+                        (od.product.category.present? and od.product.category.parent_id.present? and cids.include?(od.product.category.parent_id))
+                      ) and 
+                      (!diameter_ids.present? or (od.product.get_diameter_properties_value.present? and diameter_ids.include?(od.product.get_diameter_properties_value))) and
+                      (!number_ids.present? or (od.product.get_diameter_properties_value.present? and number_ids.include?(od.product.get_number_properties_value))) and
+                      (!letter_ids.present? or (od.product.get_diameter_properties_value.present? and letter_ids.include?(od.product.get_letter_properties_value)))
+                      
+                      
+                        od.discount = (@discount_percent/100.00)*(od.subtotal)
+                    end
+                  end
                 end
                 
                 # categories table before discount
