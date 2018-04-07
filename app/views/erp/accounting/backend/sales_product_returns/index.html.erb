@@ -8,21 +8,21 @@
 
 <% content_for :global_filter do %>
     <div class="row top-datalist">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <%= erp_form_control('date', {
                 label: t('.from_date'),
                 name: 'from_date',
                 placeholder: t('.select_from_date')
             }) %>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <%= erp_form_control('date', {
                 label: t('.to_date'),
                 name: 'to_date',
                 placeholder: t('.select_to_date')
             }) %>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <%= erp_form_control("dataselect", {
                 name: 'period',
                 label: t('.filter_period'),
@@ -36,6 +36,14 @@
                 label: t('.filter_customer'),
                 placeholder: t('.choose_customer'),
                 url: erp_contacts.dataselect_backend_contacts_path(format: 'json', is_customer: true),
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control("dataselect", {
+                name: 'employee',
+                label: t('.filter_employee'),
+                placeholder: t('.choose_employee'),
+                url: erp.dataselect_backend_users_path(format: 'json')
             }) %>
         </div>
     </div>

@@ -31,21 +31,21 @@
 
 <% content_for :global_filter do %>
     <div class="row top-datalist">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <%= erp_form_control('date', {
                 label: 'Từ ngày',
                 name: 'from_date',
                 placeholder: 'Chọn ngày'
             }) %>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <%= erp_form_control('date', {
                 label: 'Đến ngày',
                 name: 'to_date',
                 placeholder: 'Chọn ngày'
             }) %>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <%= erp_form_control('dataselect', {
                 label: 'Mốc thời gian',
                 name: 'period',
@@ -63,6 +63,14 @@
                 url: erp_contacts.dataselect_backend_contacts_path(format: 'json',
                     is_customer: true,
                     contact_id: Erp::Contacts::Contact.get_main_contact),
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control("dataselect", {
+                name: 'employee',
+                label: t('.filter_employee'),
+                placeholder: t('.choose_employee'),
+                url: erp.dataselect_backend_users_path(format: 'json')
             }) %>
         </div>
     </div>
