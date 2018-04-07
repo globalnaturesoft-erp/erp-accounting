@@ -135,8 +135,6 @@ module Erp
                       (!diameter_ids.present? or (od.product.get_diameter_properties_value.present? and diameter_ids.include?(od.product.get_diameter_properties_value))) and
                       (!number_ids.present? or (od.product.get_diameter_properties_value.present? and number_ids.include?(od.product.get_number_properties_value))) and
                       (!letter_ids.present? or (od.product.get_diameter_properties_value.present? and letter_ids.include?(od.product.get_letter_properties_value)))
-                      
-                      
                         od.discount = (@discount_percent/100.00)*(od.subtotal)
                     end
                   end
