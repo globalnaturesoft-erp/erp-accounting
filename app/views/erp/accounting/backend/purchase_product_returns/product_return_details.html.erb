@@ -22,26 +22,35 @@
                     <tr>
                         <th width="20%" class="bg-yellow bg-font-yellow text-nowrap text-center">Tên sản phẩm</th>
                         <th class="bg-yellow bg-font-yellow text-nowrap text-center">ĐVT</th>
-                        <th width="15%" class="bg-yellow bg-font-yellow text-nowrap text-center">Hóa đơn liên quan</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">SL trả hàng</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-center" title="Giá phải trả lại cho khách hàng trên 1 đơn vị sản phẩm">Giá trả</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">TT SP</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Kho xuất</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Số lô</th>
+                        <th width="15%" class="bg-yellow bg-font-yellow text-nowrap text-center">Chg.từ liên quan</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Số lượng</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center" title="Giá phải trả lại cho khách hàng trên 1 đơn vị sản phẩm">Đơn giá</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Thành tiền</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Giảm giá</th>
+                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Thuế VAT</th>
                         <th class="bg-yellow bg-font-yellow text-nowrap text-center">Tổng trả</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Tình trạng</th>
-                        <th class="bg-yellow bg-font-yellow text-nowrap text-center">Kho nhập</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="bg-green bold" colspan="3">Tổng cộng</td>
+                        <td class="bg-green bold" colspan="6">Tổng cộng</td>
                         <td class="bg-green bold text-center"><%= @product_return.total_delivery_quantity %></td>
                         <td class="bg-green"></td>
-                        <td class="bg-green bold text-right"><%= format_price(@product_return.total_amount) %></td>
-                        <td class="bg-green" colspan="3"></td>
+                        <td class="bg-green bold text-right"><%= format_price(@product_return.subtotal) %></td>
+                        <td class="bg-green bold text-right"><%= format_price(@product_return.discount) %></td>
+                        <td class="bg-green bold text-right"><%= format_price(@product_return.tax_amount) %></td>
+                        <td class="bg-green bold text-right"><%= format_price(@product_return.total) %></td>
                     </tr>
                     <% @product_return.delivery_details.each do |delivery_detail| %>
                         <tr>
                             <td class="bold text-left"><%= delivery_detail.product_name %></td>
                             <td class="text-left"><%= delivery_detail.product_unit %></td>
+                            <td class="text-left"><%= delivery_detail.serials %></td>
+                            <td class="text-center"><%= delivery_detail.state_name %></td>
+                            <td class="text-center"><%= delivery_detail.warehouse_name %></td>
                             <td class="text-left">
                                 <% if delivery_detail.order_detail_id.nil? %>
                                     Không chứng từ
@@ -51,9 +60,10 @@
                             </td>
                             <td class="text-center"><%= delivery_detail.quantity %></td>
                             <td class="text-right"><%= format_price(delivery_detail.price) %></td>
-                            <td class="text-right"><%= format_price(delivery_detail.total_amount) %></td>
-                            <td class="text-center"><%= delivery_detail.state_name %></td>
-                            <td class="text-center"><%= delivery_detail.warehouse_name %></td>
+                            <td class="text-right"><%= format_price(delivery_detail.subtotal) %></td>
+                            <td class="text-right"><%= format_price(delivery_detail.discount) %></td>
+                            <td class="text-right"><%= format_price(delivery_detail.tax_amount) %></td>
+                            <td class="text-right"><%= format_price(delivery_detail.total) %></td>
                         </tr>
                     <% end %>
                 </tbody>

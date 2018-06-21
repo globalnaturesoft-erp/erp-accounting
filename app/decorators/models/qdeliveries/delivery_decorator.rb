@@ -16,7 +16,7 @@ Erp::Qdeliveries::Delivery.class_eval do
   
   def self.accounting_purchase_deliveries
     self.where(status: Erp::Qdeliveries::Delivery::STATUS_DELIVERED)
-        .where(delivery_type: Erp::Qdeliveries::Delivery::TYPE_PURCHASE_IMPORT)
+        .where(delivery_type: Erp::Qdeliveries::Delivery::TYPE_PURCHASE_EXPORT)
         .where(payment_for: Erp::Qdeliveries::Delivery::PAYMENT_FOR_ORDER)
   end
 
@@ -44,7 +44,8 @@ Erp::Qdeliveries::Delivery.class_eval do
 
   # update cache payment status
   def update_cache_payment_status
-    if [Erp::Qdeliveries::Delivery::TYPE_SALES_IMPORT].include?(self.delivery_type)
+    if [Erp::Qdeliveries::Delivery::TYPE_SALES_IMPORT,
+        Erp::Qdeliveries::Delivery::TYPE_PURCHASE_EXPORT].include?(self.delivery_type)
       self.update_columns(cache_payment_status: payment_status)
     end
   end
