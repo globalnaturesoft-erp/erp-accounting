@@ -13,7 +13,7 @@ module Erp
         actions << {
           text: '<i class="fa fa-edit"></i> Chỉnh sửa',
           url: erp_orders.edit_backend_order_path(order),
-          target: '_blank'
+          class: "modal-link"
         } if can? :update, order
         if (can? :receive_sales_order, order) or (can? :pay_sales_order, order) or (can? :receive_purchase_order, order) or (can? :pay_purchase_order, order)
           actions << { divider: true }
@@ -24,7 +24,8 @@ module Erp
             order_id: order.id,
             pay_receive: Erp::Payments::PaymentRecord::TYPE_RECEIVE,
             payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_SALES_ORDER)),
-          target: '_blank'
+          #target: '_blank',
+          class: "modal-link has-form"
         } if can? :receive_sales_order, order
         actions << {
           text: '<i class="fa fa-angle-double-right"></i> ' + t('.pay_kh'),
@@ -32,7 +33,8 @@ module Erp
             order_id: order.id,
             pay_receive: Erp::Payments::PaymentRecord::TYPE_PAY,
             payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_SALES_ORDER)),
-          target: '_blank'
+          #target: '_blank',
+          class: "modal-link has-form"
         } if can? :pay_sales_order, order
         actions << {
           text: '<i class="fa fa-angle-double-left"></i> ' + t('.receive_ncc'),
@@ -40,7 +42,8 @@ module Erp
             order_id: order.id,
             pay_receive: Erp::Payments::PaymentRecord::TYPE_RECEIVE,
             payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_PURCHASE_ORDER)),
-          target: '_blank'
+          #target: '_blank',
+          class: "modal-link has-form"
         } if can? :receive_purchase_order, order
         actions << {
           text: '<i class="fa fa-angle-double-right"></i> ' + t('.pay_ncc'),
@@ -48,7 +51,8 @@ module Erp
             order_id: order.id,
             pay_receive: Erp::Payments::PaymentRecord::TYPE_PAY,
             payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_PURCHASE_ORDER)),
-          target: '_blank'
+          #target: '_blank',
+          class: "modal-link has-form"
         } if can? :pay_purchase_order, order
 
         erp_datalist_row_actions(
@@ -67,7 +71,8 @@ module Erp
         actions << {
           text: '<i class="fa fa-edit"></i> Chỉnh sửa',
           url: erp_qdeliveries.edit_backend_delivery_path(delivery),
-          target: '_blank'
+          #target: '_blank',
+          class: "modal-link"
         } if can? :update, delivery
         if (can? :pay_sales_import, delivery)
           actions << { divider: true }
@@ -78,7 +83,8 @@ module Erp
             delivery_id: delivery.id,
             pay_receive: Erp::Payments::PaymentRecord::TYPE_PAY,
             payment_type_id: Erp::Payments::PaymentType.find_by_code(Erp::Payments::PaymentType::CODE_PRODUCT_RETURN)),
-            target: '_blank'
+            #target: '_blank',
+            class: "modal-link has-form"
         } if can? :pay_sales_import, delivery
 
         erp_datalist_row_actions(
@@ -97,7 +103,7 @@ module Erp
         actions << {
             text: '<i class="fa fa-edit"></i> '+t('.edit'),
             url: erp_payments.edit_backend_payment_record_path(payment_record),
-            class: "modal-link"
+            class: "modal-link has-form"
         }
         
         erp_datalist_row_actions(
