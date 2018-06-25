@@ -13,7 +13,8 @@ module Erp
         actions << {
           text: '<i class="fa fa-edit"></i> Chỉnh sửa',
           url: erp_orders.edit_backend_order_path(order),
-          class: "modal-link"
+          target: '_blank',
+          #class: "modal-link"
         } if can? :update, order
         if (can? :receive_sales_order, order) or (can? :pay_sales_order, order) or (can? :receive_purchase_order, order) or (can? :pay_purchase_order, order)
           actions << { divider: true }
@@ -71,8 +72,8 @@ module Erp
         actions << {
           text: '<i class="fa fa-edit"></i> Chỉnh sửa',
           url: erp_qdeliveries.edit_backend_delivery_path(delivery),
-          #target: '_blank',
-          class: "modal-link"
+          target: '_blank',
+          #class: "modal-link"
         } if can? :update, delivery
         if (can? :pay_sales_import, delivery)
           actions << { divider: true }
@@ -103,7 +104,8 @@ module Erp
         actions << {
             text: '<i class="fa fa-edit"></i> '+t('.edit'),
             url: erp_payments.edit_backend_payment_record_path(payment_record),
-            class: "modal-link has-form"
+            target: '_blank',
+            #class: "modal-link has-form"
         }
         
         erp_datalist_row_actions(
