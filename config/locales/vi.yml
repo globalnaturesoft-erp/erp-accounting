@@ -126,6 +126,8 @@ vi:
             view: "Xem hóa đơn"
             receive_kh: "Thu tiền bán hàng"
             pay_kh: "Chi trả lại tiền dư"
+            delete: "Hủy đơn hàng"
+            delete_confirm: "Bạn có chắc chắn muốn hủy bỏ đơn hàng này?"
           sales_order_details:
             order_details: "Chi tiết đơn hàng"
             payment_details: "Lịch sử thanh toán"
@@ -191,6 +193,8 @@ vi:
             view: "Xem hóa đơn"
             receive_ncc: "Thu hoàn tiền dư"
             pay_ncc: "Chi tiền mua hàng"
+            delete: "Hủy đơn hàng"
+            delete_confirm: "Bạn có chắc chắn muốn hủy bỏ đơn hàng này?"
           purchase_order_details:
             order_details: "Chi tiết đơn hàng"
             payment_details: "Lịch sử thanh toán"

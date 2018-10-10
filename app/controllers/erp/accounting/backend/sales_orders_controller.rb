@@ -3,7 +3,11 @@ module Erp
     module Backend
       class SalesOrdersController < Erp::Backend::BackendController
         before_action :set_order, only: [:ajax_update_order, :ajax_commission_order]
-
+        
+        def index
+          authorize! :accounting_chase_chase_sales, nil
+        end
+        
         # POST /sales orders/list
         def sales_orders_list
           @orders = Erp::Orders::Order.search(params)

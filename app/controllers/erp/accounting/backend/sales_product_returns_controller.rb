@@ -2,6 +2,11 @@ module Erp
   module Accounting
     module Backend
       class SalesProductReturnsController < Erp::Backend::BackendController
+        
+        def index
+          authorize! :accounting_chase_chase_sales_return, nil
+        end
+        
         def product_returns_list
           @product_returns = Erp::Qdeliveries::Delivery.search(params)
             .accounting_sales_deliveries.get_deliveries_with_payment_for_order

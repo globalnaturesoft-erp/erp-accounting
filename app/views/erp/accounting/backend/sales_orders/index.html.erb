@@ -19,14 +19,14 @@
             text: 'Công cụ',
             class: 'btn-noborder',
             icon: 'fa fa-clone'
-        }) %>
+        }) if false %>
     <% end %>
     <%= erp_component('button/create', {
         text: t('.create_customer_order'),
         href: erp_orders.new_backend_order_path(type: Erp::Orders::Order::TYPE_SALES_ORDER),
         class: 'btn-noborder',
         target: '_blank'
-    }) %>
+    }) if can? :sales_sales_orders_create, nil %>
 <% end %>
 
 <% content_for :global_filter do %>

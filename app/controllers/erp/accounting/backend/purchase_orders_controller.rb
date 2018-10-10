@@ -2,7 +2,11 @@ module Erp
   module Accounting
     module Backend
       class PurchaseOrdersController < Erp::Backend::BackendController
-
+        
+        def index
+          authorize! :accounting_chase_chase_purchase, nil
+        end
+        
         # POST /sales orders/list
         def purchase_orders_list
           @orders = Erp::Orders::Order.search(params)
